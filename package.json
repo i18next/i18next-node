@@ -1,0 +1,18 @@
+{
+  "author": "jamuhl"
+  , "name": "i18next"
+  , "version": "0.0.1"
+  , "private": false
+  , "main": "index.js"
+  , "engines": {
+        "node": "~v0.4.12"
+    }
+  , "dependencies": { }
+  , "devDependencies": {
+      "jake": ">=0.0.1"
+    , "mocha": ">=0.0.1"
+    , "should": ">=0.0.1"  
+  }
+  , "scripts": {
+  }
+}
