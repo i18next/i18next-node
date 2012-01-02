@@ -1,0 +1,18 @@
+{
+  "author": "jamuhl"
+  , "name": "i18next-sample"
+  , "version": "0.0.1"
+  , "private": false
+  , "main": "server.js"
+  , "engines": {
+        "node": "~v0.4.12"
+    }
+  , "dependencies": { 
+      "express": ">=0.0.1"
+    , "jade": ">=0.0.1"
+    , "cookies": ">= 0.1.6"
+  }
+  , "devDependencies": { }
+  , "scripts": {
+  }
+}

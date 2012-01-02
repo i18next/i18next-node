@@ -1,3 +1,3 @@
-run tests with cmd
+//run tests with cmd
 
-mocha --globals i,len test/*
+//mocha --globals i,len test/*

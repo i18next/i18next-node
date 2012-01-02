@@ -7,7 +7,9 @@
   , "engines": {
         "node": "~v0.4.12"
     }
-  , "dependencies": { }
+  , "dependencies": { 
+      "cookies": ">= 0.1.6"
+  }
   , "devDependencies": {
       "jake": ">=0.0.1"
     , "mocha": ">=0.0.1"
