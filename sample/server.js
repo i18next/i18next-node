@@ -9,11 +9,7 @@ var resStore = {
 };
 
 i18n.init({
-    //lng: 'en-US',
-    ns: 'translation',
-    dynamicLoad: false,
-    useLocalStorage: false,
-    resStore: resStore
+    ns: { namespaces: ['ns.common', 'ns.special'], defaultNs: 'ns.special'}
 });
 
 i18n.registerAppHelper(app);

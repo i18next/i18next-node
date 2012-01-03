@@ -4,4 +4,17 @@ html(lang="en")
         title i18next sample
 
     body
-        p= t('simpleTest_en-US')
+        h3 î18n used in template via express app.helper
+        span= t('app.name') + ' '
+        span= t('app.area')
+        button= t('ns.common:add')
+
+        h5 with value insert t('app.insert', {youAre: 'great'})
+        span= t('app.insert', {youAre: 'great'})
+
+        h5 with plural t('app.child', {count: n})
+        span= t('app.child', {count: 1}) + ' - '
+        span= t('app.child', {count: 3})
+
+        h5 nesting
+        span= t('app.district')
