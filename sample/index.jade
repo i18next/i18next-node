@@ -4,6 +4,11 @@ html(lang="en")
         title i18next sample
 
     body
+        h3 you can switch lng via ?setLng='lngTag'
+        a(href='/?setLng=en-US') en-US
+        | &nbsp;
+        a(href='/?setLng=de-DE') de-DE
+
         h3 î18n used in template via express app.helper
         span= t('app.name') + ' '
         span= t('app.area')

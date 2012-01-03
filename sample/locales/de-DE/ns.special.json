@@ -1,0 +1,8 @@
+{
+    "app": {
+      "name": "i18n",
+      "insert": "du bist __youAre__",
+      "child": "__count__ Kind",
+      "child_plural": "__count__ Kinder"
+    }
+}
