@@ -1,4 +1,9 @@
 {
+	"nav": {
+        "home": "home de",
+        "1": "link 1 de",
+        "2": "link 2 de"
+    },
     "app": {
       "name": "i18n",
       "insert": "du bist __youAre__",

@@ -2,12 +2,14 @@
 html(lang="en")
     head
         title i18next sample
+        script(src="http://code.jquery.com/jquery-1.6.4.min.js", type="text/javascript")
+        script(src='i18next/i18next.js', type='text/javascript')          
 
     body
         h3 you can switch lng via ?setLng='lngTag'
-        a(href='/?setLng=en-US') en-US
+        a#en(href='/?setLng=en-US') en-US
         | &nbsp;
-        a(href='/?setLng=de-DE') de-DE
+        a#de(href='/?setLng=de-DE') de-DE
 
         h3 î18n used in template via express app.helper
         span= t('app.name') + ' '
@@ -26,3 +28,54 @@ html(lang="en")
 
         h5 auto add missing Keys
         span= t('app.room', {defaultValue: 'Room 21'})
+
+        h3 or translate on clientside via served script
+        span#appname
+        | &nbsp;
+        span#apparea
+
+        h5 loaded via attribute 'data-i18n' and $('.nav').i18n()
+        ul.nav
+            li: a(href="#", data-i18n="nav.home")
+            li: a(href="#", data-i18n="nav.1")
+            li: a(href="#", data-i18n="nav.2")
+
+        h5 post missing
+        span#missing
+
+        script(type="text/javascript")
+
+            var qsParm = new Array();
+            function qs() {
+                var query = window.location.search.substring(1);
+                var parms = query.split('&');
+                for (var i=0; i<parms.length; i++) {
+                    var pos = parms[i].indexOf('=');
+                    if (pos > 0) {
+                        var key = parms[i].substring(0,pos);
+                        var val = parms[i].substring(pos+1);
+                        qsParm[key] = val;
+                    }
+                }
+            };
+
+            qs();
+
+            var options = {
+                ns: { namespaces: ['ns.common', 'ns.special'], defaultNs: 'ns.special'},
+                useLocalStorage: false,
+                resGetPath: 'locales/resources.json?lng=__lng__&ns=__ns__',
+                dynamicLoad: true,
+                sendMissing: true
+            };
+
+            if (qsParm.setLng) options.lng = qsParm.setLng;
+
+            $.i18n.init(options, function() { 
+                $('#appname').text($.t('app.name'));
+                $('#apparea').text($.t('app.area'));
+
+                $('.nav').i18n();
+
+                $('#missing').text($.t('app.missingKeyFromClient'));
+            });

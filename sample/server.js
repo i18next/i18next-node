@@ -8,16 +8,20 @@ i18n.init({
     saveMissing: true
 });
 
-i18n.registerAppHelper(app);
-
 // Configuration
 app.configure(function() {
+    app.use(express.bodyParser());
     app.use(i18n.handle);
     app.use(app.router);
 
     app.set('view engine', 'jade');
     app.set('views', __dirname);
 });
+
+i18n.registerAppHelper(app)
+    .serveClientScript(app)
+    .serveDynamicResources(app)
+    .serveMissingKeyRoute(app);
 
 app.get('/', function(req, res){
 	res.render('index', { layout: false });
