@@ -3,6 +3,7 @@ $ cat .gitignore
 # Can ignore specific files
 .settings.xml
 .monitor
+sample/locales/dev/new.ns.special.json
 
 # Use wildcards as well
 *~
