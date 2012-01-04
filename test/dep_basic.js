@@ -1,5 +1,5 @@
 var i18n = require('../lib/i18nextWrapper')
-  , should = require('should');
+  , assert = require('assert');
 
 
 describe('Basic Dependency Functionality', function() {
@@ -16,9 +16,9 @@ describe('Basic Dependency Functionality', function() {
                 'en-US': { translation: { 'simpleTest_en-US': 'ok_from_en-US' } }
             }
         }, function(t) {
-            t('simpleTest_en-US').should.equal('ok_from_en-US');
-            t('simpleTest_en').should.equal('ok_from_en');
-            t('simpleTest_dev').should.equal('ok_from_dev');
+            assert.equal(t('simpleTest_en-US'),'ok_from_en-US');
+            assert.equal(t('simpleTest_en'),'ok_from_en');
+            assert.equal(t('simpleTest_dev'),'ok_from_dev');
 
             done();
         });
@@ -34,10 +34,10 @@ describe('Basic Dependency Functionality', function() {
                 'de-DE': { translation: { 'simpleTest': 'ok_from_de-DE' } }
             }
         }, function(t) {
-            t('simpleTest').should.equal('ok_from_en-US');
+            assert.equal(t('simpleTest'),'ok_from_en-US');
 
             i18n.setLng('de-DE', function(t) {
-                t('simpleTest').should.equal('ok_from_de-DE');
+                assert.equal(t('simpleTest'),'ok_from_de-DE');
 
                 done();
             });
@@ -67,10 +67,10 @@ describe('Basic Dependency Functionality', function() {
                 }
             }
         }, function(t) {
-            t('nesting1').should.equal('1 2 3');
-            t('pluralTest', {count: 1}).should.equal('no plural');
-            t('pluralTest', {count: 2}).should.equal('plural');
-            t('interpolationTest', {toAdd: 'something'}).should.equal('added something');
+            assert.equal(t('nesting1'),'1 2 3');
+            assert.equal(t('pluralTest', {count: 1}),'no plural');
+            assert.equal(t('pluralTest', {count: 2}),'plural');
+            assert.equal(t('interpolationTest', {toAdd: 'something'}),'added something');
 
             done();
         });
@@ -93,11 +93,11 @@ describe('Basic Dependency Functionality', function() {
                 'sl-??': { translation: { } }
             }
         }, function(t) {
-            t('beer', {count: 1}).should.equal('Pivo');
-            t('beer', {count: 2}).should.equal('Pivi');
-            t('beer', {count: 3}).should.equal('Piva');
-            t('beer', {count: 4}).should.equal('Piva');
-            t('beer', {count: 5}).should.equal('no idea ;)');
+            assert.equal(t('beer', {count: 1}),'Pivo');
+            assert.equal(t('beer', {count: 2}),'Pivi');
+            assert.equal(t('beer', {count: 3}),'Piva');
+            assert.equal(t('beer', {count: 4}),'Piva');
+            assert.equal(t('beer', {count: 5}),'no idea ;)');
 
             done();
         });
