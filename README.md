@@ -1,7 +1,7 @@
 # Introduction
 
 Project goal is to provide the same easy way to translate a website on serverside like in 
-[i18next](http://jamuhl.github.com/i18next/) on the clientside:
+[i18next](https://github.com/jamuhl/i18next) on the clientside:
 
 - Translation inside your server code or template
 - loading resourcefiles
