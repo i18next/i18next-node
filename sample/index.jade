@@ -23,6 +23,10 @@ html(lang="en")
         span= t('app.child', {count: 1}) + ' - '
         span= t('app.child', {count: 3})
 
+        h5 with context t('app.friend', {context: [context]})
+        span= t('app.friend_context', {context: 'male'}) + ' - '
+        span= t('app.friend_context', {context: 'female'})
+
         h5 nesting
         span= t('app.district')
 
