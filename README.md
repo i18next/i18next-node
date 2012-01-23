@@ -1,5 +1,7 @@
 # Introduction
 
+[![Build Status](https://secure.travis-ci.org/jamuhl/i18next-node.png)](http://travis-ci.org/jamuhl/i18next-node)
+
 Project goal is to provide the same easy way to translate a website on serverside like in 
 [i18next](https://github.com/jamuhl/i18next) on the clientside:
 
@@ -8,8 +10,6 @@ Project goal is to provide the same easy way to translate a website on serversid
 - update resourcefiles with missing strings
 - interpolation, plurals, nesting or resources
 - serve the same resources to the clientside
-
-[![Build Status](https://secure.travis-ci.org/jamuhl/i18next-node.png)](http://travis-ci.org/jamuhl/i18next-node)
 
 # installation
 
