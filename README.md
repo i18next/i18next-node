@@ -9,6 +9,8 @@ Project goal is to provide the same easy way to translate a website on serversid
 - interpolation, plurals, nesting or resources
 - serve the same resources to the clientside
 
+[![Build Status](https://secure.travis-ci.org/jamuhl/i18next-node.png)](http://travis-ci.org/jamuhl/i18next-node)
+
 # installation
 
 	npm install i18next
