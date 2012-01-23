@@ -27,4 +27,8 @@ app.get('/', function(req, res){
 	res.render('index', { layout: false });
 });
 
+app.get('/str', function(req, res) {
+    res.send('locale: ' + req.locale + '<br /> key nav.home -> ' + req.i18n.t('nav.home'));
+});
+
 app.listen(3000);
