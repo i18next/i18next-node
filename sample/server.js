@@ -11,8 +11,9 @@ i18n.init({
 // Configuration
 app.configure(function() {
     app.use(express.bodyParser());
-    app.use(i18n.handle);
     app.use(app.router);
+    app.use(i18n.handle);
+    
 
     app.set('view engine', 'jade');
     app.set('views', __dirname);
