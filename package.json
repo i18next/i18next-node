@@ -5,7 +5,7 @@
   "version": "1.2.3",
   "repository": {
     "type": "git",
-    "url": "git@github.com:jamuhl/i18next-node.git"
+    "url": "git://github.com/jamuhl/i18next-node.git"
   },
   "private": false,
   "main": "index.js",
