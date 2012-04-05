@@ -10,7 +10,7 @@
   , "dependencies": { 
       "express": ">=0.0.1"
     , "jade": ">=0.0.1"
-    , "cookies": ">= 0.1.6"
+    , "cookies": ">= 0.2.2"
   }
   , "devDependencies": { }
   , "scripts": {
