@@ -2,7 +2,7 @@
   "author": "Jan Muehlemann <jan.muehlemann@gmail.com>",
   "name": "i18next",
   "description": "A i18n middleware for the Express.js framework.",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "repository": {
     "type": "git",
     "url": "git://github.com/jamuhl/i18next-node.git"
@@ -13,7 +13,7 @@
     "lib": "lib"
   },
   "engines": {
-    "node": ">v0.4.0"
+    "node": ">= 0.4.0"
   },
   "dependencies": {
     "cookies": ">= 0.2.2"

@@ -11,10 +11,9 @@ i18n.init({
 // Configuration
 app.configure(function() {
     app.use(express.bodyParser());
-    app.use(app.router);
-    app.use(i18n.handle);
+    app.use(i18n.handle); // have i18n befor app.router
     
-
+    app.use(app.router);
     app.set('view engine', 'jade');
     app.set('views', __dirname);
 });
@@ -24,7 +23,7 @@ i18n.registerAppHelper(app)
     .serveDynamicResources(app)
     .serveMissingKeyRoute(app);
 
-app.get('/', function(req, res){
+app.get('/', function(req, res){ console.log(req.lng);
 	res.render('index', { layout: false });
 });
 

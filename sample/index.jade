@@ -6,18 +6,21 @@ html(lang="en")
         script(src='i18next/i18next.js', type='text/javascript')          
 
     body
+        h3 get current language in template via express app.helper 
+        span= i18n.lng()
+
         h3 you can switch lng via ?setLng='lngTag'
         a#en(href='/?setLng=en-US') en-US
         | &nbsp;
         a#de(href='/?setLng=de-DE') de-DE
 
-        h3 î18n used in template via express app.helper
+        h3 i18n used in template via express app.helper
         span= t('app.name') + ' '
         span= t('app.area')
         button= t('ns.common:add')
 
         h5 with value insert t('app.insert', {youAre: 'great'})
-        span= t('app.insert', {youAre: 'great'})
+        span= i18n.t('app.insert', {youAre: 'great'})
 
         h5 with plural t('app.child', {count: n})
         span= t('app.child', {count: 1}) + ' - '
