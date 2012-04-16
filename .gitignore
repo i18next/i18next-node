@@ -4,6 +4,7 @@ $ cat .gitignore
 .settings.xml
 .monitor
 sample/locales/dev/new.ns.special.json
+.DS_Store
 
 # Use wildcards as well
 *~
