@@ -1,7 +1,7 @@
 {
   "author": "Jan Muehlemann <jan.muehlemann@gmail.com>",
   "name": "i18next",
-  "description": "A i18n middleware for the Express.js framework.",
+  "description": "i18n made easy - full featured: middleware, template support plus clientside use",
   "version": "1.2.5",
   "repository": {
     "type": "git",
@@ -19,7 +19,7 @@
     "cookies": ">= 0.2.2"
   },
   "devDependencies": {
-    "mocha": "~0.10.2"
+    "mocha": ">= 0.10.2"
   },
   "scripts": {
     "test": "make test"
