@@ -23,7 +23,7 @@ i18n.registerAppHelper(app)
     .serveDynamicResources(app)
     .serveMissingKeyRoute(app);
 
-app.get('/', function(req, res){ console.log(req.lng);
+app.get('/', function(req, res) {
 	res.render('index', { layout: false });
 });
 
