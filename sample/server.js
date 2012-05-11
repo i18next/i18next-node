@@ -5,7 +5,8 @@ var express = require('express')
 i18n.init({
     ns: { namespaces: ['ns.common', 'ns.special'], defaultNs: 'ns.special'},
     resSetPath: 'locales/__lng__/new.__ns__.json',
-    saveMissing: true
+    saveMissing: true,
+    debug: true
 });
 
 // Configuration
