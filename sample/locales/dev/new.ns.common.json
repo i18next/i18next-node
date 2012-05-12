@@ -1,0 +1,22 @@
+{
+    "app": {
+        "company": {
+            "name": "my company"
+        },
+        "name": "app.name",
+        "area": "app.area",
+        "insert": "app.insert",
+        "child": "app.child",
+        "child_plural": "plural_not_found0.13931888085789979",
+        "friend_context_male": "context_not_found0.865197473205626",
+        "friend_context": "app.friend_context",
+        "friend_context_female": "context_not_found0.865197473205626",
+        "district": "app.district",
+        "room": "Room 21"
+    },
+    "attr": {
+        "placeholder": "translated placeholder",
+        "title": "translated title"
+    },
+    "add": "add"
+}
