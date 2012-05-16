@@ -1,7 +1,36 @@
 var express = require('express')
   , app = express.createServer()
-  , i18n = require('../index');
+  , i18n = require('../index')
+  , i18nMongoSync = require('../backends/mongoDb/index');
 
+// use mongoDb
+// i18nMongoSync.connect(function() {
+
+//     i18nMongoSync.saveResourceSet('en-US', 'ns.special', {
+//         resources: {
+//             "app": {
+//               "name": "i18n",
+//               "insert": "you are __youAre__",
+//               "child": "__count__ child",
+//               "child_plural": "__count__ children",
+//               "friend_context": "A friend",
+//               "friend_context_male": "A boyfriend",
+//               "friend_context_female": "A girlfriend"
+//             }
+//         }
+//     }, function() {
+//         i18n.backend(i18nMongoSync);
+
+//         i18n.init({
+//             ns: { namespaces: ['ns.common', 'ns.special'], defaultNs: 'ns.special'},
+//             resSetPath: 'locales/__lng__/new.__ns__.json',
+//             saveMissing: true,
+//             debug: true
+//         });
+//     });
+// });
+
+// use filesys
 i18n.init({
     ns: { namespaces: ['ns.common', 'ns.special'], defaultNs: 'ns.special'},
     resSetPath: 'locales/__lng__/new.__ns__.json',
