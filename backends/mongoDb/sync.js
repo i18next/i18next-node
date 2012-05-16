@@ -51,7 +51,7 @@ module.exports = {
                 cb(err);
             } else {
                 if(!obj) {
-                    cb({});
+                    cb(null, {});
                 } else {
                     self.functions.log('loaded from mongoDb: ' + _id);
                     cb(null, obj.resources);
@@ -124,7 +124,7 @@ module.exports = {
                 cb(err);
             } else {
                 if(!obj) {
-                    cb({ resources: {}});
+                    cb(null, { resources: {}});
                 } else {
                     cb(null, obj);
                 }
