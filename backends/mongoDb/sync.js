@@ -9,7 +9,6 @@ module.exports = {
     // - __callback:__ `function(err, storage){}`
     connect: function(options, callback) {
 
-        this.filename = __filename;
         this.isConnected = false;
 
         if (typeof options === 'function')
@@ -41,7 +40,15 @@ module.exports = {
         });
     },
 
-    fetchOne: function(lng, ns, cb) {
+    saveResourceSet: function(lng, ns, resourceSet, cb) {
+        if (!resourceSet._id) resourceSet._id = ns + '_' + lng;
+        if (!resourceSet.lng) resourceSet.lng = lng;
+        if (!resourceSet.namespace) resourceSet.namespace = ns;
+
+        this.resources.save(resourceSet, { safe: true }, cb);
+    },
+
+    loadResourceSet: function(lng, ns, cb) {
 
         var _id = ns + '_' + lng;
 
@@ -51,11 +58,22 @@ module.exports = {
                 cb(err);
             } else {
                 if(!obj) {
-                    cb(null, {});
+                    cb(null, { resources: {} });
                 } else {
                     self.functions.log('loaded from mongoDb: ' + _id);
-                    cb(null, obj.resources);
+                    cb(null, obj);
                 }
+            }
+        });
+    },
+
+    fetchOne: function(lng, ns, cb) {
+
+        this.loadResourceSet(lng, ns, function(err, obj) {
+            if (!obj) {
+                cb(err);
+            } else {
+                cb(err, obj.resources);
             }
         });
     },
@@ -112,33 +130,8 @@ module.exports = {
                 }
             });
         });
-    },
-
-    loadResourceSet: function(lng, ns, cb) {
-
-        var _id = ns + '_' + lng;
-
-        var self = this;
-        this.resources.findOne({ _id: _id }, function(err, obj) {
-            if (err) {
-                cb(err);
-            } else {
-                if(!obj) {
-                    cb(null, { resources: {}});
-                } else {
-                    cb(null, obj);
-                }
-            }
-        });
-    },
-
-    saveResourceSet: function(lng, ns, resourceSet, cb) {
-        if (!resourceSet._id) resourceSet._id = ns + '_' + lng;
-        if (!resourceSet.lng) resourceSet.lng = lng;
-        if (!resourceSet.namespace) resourceSet.namespace = ns;
-
-        this.resources.save(resourceSet, { safe: true }, cb);
     }
+
 };
 
 // helper
