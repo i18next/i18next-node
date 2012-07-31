@@ -22,6 +22,8 @@
       "mocha": ">= 0.10.2"
     , "expect.js": ">=0.0.1"
     , "sinon": ">=0.0.1"
+    , "supertest": ">=0.0.1"
+    , "express": ">=0.0.1"
   },
   "scripts": {
     "test": "make test"

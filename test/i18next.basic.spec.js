@@ -14,11 +14,7 @@ describe('i18next.basic.spec', function() {
       lowerCaseLng: false,
       ns: 'translation',
       resGetPath: 'test/locales/__lng__/__ns__.json',
-      dynamicLoad: false,
-      useLocalStorage: false,
-      sendMissing: false,
       resStore: false,
-      getAsync: true,
       returnObjectTrees: false,
       debug: false
     };
