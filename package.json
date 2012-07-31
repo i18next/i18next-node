@@ -19,7 +19,9 @@
     "cookies": ">= 0.2.2"
   },
   "devDependencies": {
-    "mocha": ">= 0.10.2"
+      "mocha": ">= 0.10.2"
+    , "expect.js": ">=0.0.1"
+    , "sinon": ">=0.0.1"
   },
   "scripts": {
     "test": "make test"
