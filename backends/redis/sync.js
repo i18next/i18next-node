@@ -85,10 +85,10 @@ module.exports = {
 
     },
 
-    postMissing: function(ns, key, defaultValue) {
+    postMissing: function(lng, ns, key, defaultValue) {
         var self = this;
 
-        this.loadResourceSet(this.options.fallbackLng, ns, function(err, res) {
+        this.loadResourceSet(lng, ns, function(err, res) {
             // add key to resStore
             var keys = key.split('.');
             var x = 0;
@@ -102,7 +102,7 @@ module.exports = {
                 x++;
             }
 
-            self.saveResourceSet(self.options.fallbackLng, ns, res, function(err) {
+            self.saveResourceSet(lng, ns, res, function(err) {
                 if (err) {
                     self.functions.log('error saving missingKey `' + key + '` to redis');
                 } else {
@@ -112,7 +112,7 @@ module.exports = {
         });
     },
 
-    postChange: function(ns, lng, key, newValue) {
+    postChange: function(lng, ns, key, newValue) {
         var self = this;
 
         this.loadResourceSet(lng, ns, function(err, res) {
