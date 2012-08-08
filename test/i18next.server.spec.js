@@ -21,7 +21,7 @@ describe('i18next.server.spec', function() {
       debug: false
     };
 
-    app = express.createServer();
+    app = express();
 
     i18n.init(opts, function(t) { done(); });
 

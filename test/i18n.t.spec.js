@@ -310,6 +310,33 @@ describe('i18next.t.spec', function() {
 
     });
 
+    describe('postprocessing tranlation', function() {
+
+      describe('having a postprocessor', function() {
+
+        before(function(){
+          i18n.addPostProcessor('myProcessor', function(val, key, opts) {
+            return 'ok_from_postprocessor';
+          });
+        });
+
+        beforeEach(function(done) {
+          i18n.init( i18n.functions.extend(opts, {
+            resStore: {
+              'en-US': { translation: { 'simpleTest': 'ok_from_en-US' } },
+              'de-DE': { translation: { 'simpleTest': 'ok_from_de-DE' } }
+            }
+          }), function(t) { done(); } );
+        });
+
+        it('it should postprocess the translation', function() {
+          expect(i18n.t('simpleTest', {postProcess: 'myProcessor'})).to.be('ok_from_postprocessor');
+        });
+
+      });
+
+    });
+
   });
 
 });
