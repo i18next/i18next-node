@@ -1,4 +1,4 @@
-### v?
+### v1.5.0
 - remove route added
 - optional arg authenticated for postmissing, change, remove routes
 - integrated i18next-webtranslate
