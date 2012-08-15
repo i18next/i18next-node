@@ -1,5 +1,5 @@
 var express = require('express')
-  , app = express.createServer()
+  , app = express()
   , i18n = require('../index');
 
 // use mongoDb
@@ -80,6 +80,18 @@ i18n.registerAppHelper(app)
     .serveClientScript(app)
     .serveDynamicResources(app)
     .serveMissingKeyRoute(app);
+
+i18n.serveWebTranslate(app, {
+    i18nextWTOptions: {
+      languages: ['de-DE', 'en-US',  'dev'],
+      namespaces: ['ns.common', 'ns.special'],
+      resGetPath: "locales/resources.json?lng=__lng__&ns=__ns__",
+      resChangePath: 'locales/change/__lng__/__ns__',
+      resRemovePath: 'locales/remove/__lng__/__ns__',
+      fallbackLng: "dev",
+      dynamicLoad: true
+    }
+});
 
 app.get('/', function(req, res) {
 	res.render('index', { layout: false });
