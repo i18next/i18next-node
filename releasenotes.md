@@ -2,6 +2,7 @@
 - remove route added
 - optional arg authenticated for postmissing, change, remove routes
 - integrated i18next-webtranslate
+- couchDb Backend
 
 ### v1.4.1
 - post processing for translation
