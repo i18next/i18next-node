@@ -1,6 +1,6 @@
 {
     "author": "Jan Muehlemann"
-  , "name": "i18next.couchDb"
+  , "name": "i18next.couchdb"
   , "version": "1.5.0"
   , "contributors": [ 
     { "name": "Jan Muehlemann", "email": "jan.muehlemann@gmail.com" }
