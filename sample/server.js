@@ -7,16 +7,14 @@ var express = require('express')
 // i18nMongoSync.connect(function() {
 
 //     i18nMongoSync.saveResourceSet('en-US', 'ns.special', {
-//         resources: {
-//             "app": {
-//               "name": "i18n",
-//               "insert": "you are __youAre__",
-//               "child": "__count__ child",
-//               "child_plural": "__count__ children",
-//               "friend_context": "A friend",
-//               "friend_context_male": "A boyfriend",
-//               "friend_context_female": "A girlfriend"
-//             }
+//         "app": {
+//             "name": "i18n",
+//             "insert": "you are __youAre__",
+//             "child": "__count__ child",
+//             "child_plural": "__count__ children",
+//             "friend_context": "A friend",
+//             "friend_context_male": "A boyfriend",
+//             "friend_context_female": "A girlfriend"
 //         }
 //     }, function() {
 //         i18n.backend(i18nMongoSync);
@@ -35,16 +33,14 @@ var express = require('express')
 // i18nRedisSync.connect(function() {
 
 //     i18nRedisSync.saveResourceSet('en-US', 'ns.special', {
-//         resources: {
-//             "app": {
-//               "name": "i18n",
-//               "insert": "you are __youAre__",
-//               "child": "__count__ child",
-//               "child_plural": "__count__ children",
-//               "friend_context": "A friend",
-//               "friend_context_male": "A boyfriend",
-//               "friend_context_female": "A girlfriend"
-//             }
+//         "app": {
+//             "name": "i18n",
+//             "insert": "you are __youAre__",
+//             "child": "__count__ child",
+//             "child_plural": "__count__ children",
+//             "friend_context": "A friend",
+//             "friend_context_male": "A boyfriend",
+//             "friend_context_female": "A girlfriend"
 //         }
 //     }, function(err) {
 //         i18n.backend(i18nRedisSync);

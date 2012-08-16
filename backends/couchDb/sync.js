@@ -1,4 +1,4 @@
-var redis = require('redis');
+var cradle = require('cradle');
 
 module.exports = {
 
@@ -14,40 +14,59 @@ module.exports = {
             callback = options;
             
         var defaults = {
-            host: 'localhost',
-            port: 6379,
-            database: 0,
+            host: 'http://localhost',
+            port: 5984,
+            dbName: 'i18next',
             resCollectionName: 'resources'
         };
 
         options = mergeOptions(options, defaults);
 
+        var defaultOpt = {
+            cache: true,
+            raw: false//,
+            // secure: true,
+            // auth: { username: 'login', password: 'pwd' }
+        };
+
+        options.options = options.options || {};
+
+        options.options = mergeOptions(options.options, defaultOpt);
+
         this.resCollectionName = options.resCollectionName;
 
         var self = this;
 
-        this.client = redis.createClient(options.port, options.host);
+        var client = new(cradle.Connection)(options.host, options.port, options.options);
+        var db = client.database(options.dbName);
+        db.exists(function (err, exists) {
 
-        this.client.on('ready', function () {
-            if (options.database !== 0) {
-                self.client.select(options.database, function(err, ok) {
-                    if (err) {
-                        if (callback) callback(err);
-                    } else {
-                        self.isConnected = true;
-                        if (callback) callback(null, self);
-                    }
+            function finish() {
+                self.client = client;
+                self.db = db;
+                self.isConnected = true;
+
+                if (callback) { return callback(null, self); }
+            }
+
+            if (err) {
+                if (callback) { return callback(err); }
+            } else if (!exists) {
+                db.create(function(err) {
+                    finish();
                 });
             } else {
-                self.isConnected = true;
-                if (callback) callback(null, self);
+                finish();
             }
         });
     },
 
     saveResourceSet: function(lng, ns, resourceSet, cb) {
         var id = ns + '_' + lng;
-        this.client.set(this.resCollectionName + ':' + id, JSON.stringify(resourceSet), cb);
+        var self = this;
+        this.db.get(this.resCollectionName + ':' + id, function (err, res) {
+            self.db.save(res._id, res._rev, resourceSet, cb);
+        });
     },
 
     fetchOne: function(lng, ns, cb) {
@@ -55,15 +74,15 @@ module.exports = {
         var id = ns + '_' + lng;
         var self = this;
 
-        this.client.get(this.resCollectionName + ':' + id, function (err, res) {
-            if (err) {
+        this.db.get(this.resCollectionName + ':' + id, function (err, res) {
+            if (err && err.error !== 'not_found') {
                 cb(err);
             } else {
                 if(!res) {
                     cb(null, { });
                 } else {
                     self.functions.log('loaded from redis: ' + id);
-                    cb(null, JSON.parse(res));
+                    cb(null, res);
                 }
             }
         });

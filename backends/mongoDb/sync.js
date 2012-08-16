@@ -41,15 +41,15 @@ module.exports = {
     },
 
     saveResourceSet: function(lng, ns, resourceSet, cb) {
-        if (!resourceSet._id) resourceSet._id = ns + '_' + lng;
-        if (!resourceSet.lng) resourceSet.lng = lng;
-        if (!resourceSet.namespace) resourceSet.namespace = ns;
+        var toSave = { resources: resourceSet };
+        toSave._id = ns + '_' + lng;
+        toSave.lng = lng;
+        toSave.namespace = ns;
 
-        this.resources.save(resourceSet, { safe: true }, cb);
+        this.resources.save(toSave, { safe: true }, cb);
     },
 
-    loadResourceSet: function(lng, ns, cb) {
-
+    fetchOne: function(lng, ns, cb) {
         var _id = ns + '_' + lng;
 
         var self = this;
@@ -58,61 +58,48 @@ module.exports = {
                 cb(err);
             } else {
                 if(!obj) {
-                    cb(null, { resources: {} });
+                    cb(null, { });
                 } else {
                     self.functions.log('loaded from mongoDb: ' + _id);
-                    cb(null, obj);
+                    cb(null, obj.resources);
                 }
             }
         });
     },
 
-    fetchOne: function(lng, ns, cb) {
-
-        this.loadResourceSet(lng, ns, function(err, obj) {
-            if (!obj) {
-                cb(err);
+    postMissing: function(lng, ns, key, defaultValue, callback) {
+        // add key to resStore
+        var keys = key.split('.');
+        var x = 0;
+        var value = this.resStore[lng][ns];
+        while (keys[x]) {
+            if (x === keys.length - 1) {
+                value = value[keys[x]] = defaultValue;
             } else {
-                cb(err, obj.resources);
+                value = value[keys[x]] = value[keys[x]] || {};
             }
+            x++;
+        }
+
+        var self = this;
+        this.saveResourceSet(lng, ns, this.resStore[lng][ns], function(err) {
+            if (err) {
+                self.functions.log('error saving missingKey `' + key + '` to mongoDb');
+            } else {
+                self.functions.log('saved missingKey `' + key + '` with value `' + defaultValue + '` to mongoDb');
+            }
+            if (callback) callback(err);
         });
     },
 
-    postMissing: function(lng, ns, key, defaultValue) {
+    postChange: function(lng, ns, key, newValue, callback) {
         var self = this;
 
-        this.loadResourceSet(lng, ns, function(err, res) {
-            // add key to resStore
+        this.load([lng], {ns: {namespaces: [ns]}}, function(err, fetched) {
+            // change key in resStore
             var keys = key.split('.');
             var x = 0;
-            var value = res.resources;
-            while (keys[x]) {
-                if (x === keys.length - 1) {
-                    value = value[keys[x]] = defaultValue;
-                } else {
-                    value = value[keys[x]] = value[keys[x]] || {};
-                }
-                x++;
-            }
-
-            self.saveResourceSet(lng, ns, res, function(err) {
-                if (err) {
-                    self.functions.log('error saving missingKey `' + key + '` to mongoDb');
-                } else {
-                    self.functions.log('saved missingKey `' + key + '` with value `' + defaultValue + '` to mongoDb');
-                }
-            });
-        });
-    },
-
-    postChange: function(lng, ns, key, newValue) {
-        var self = this;
-
-        this.loadResourceSet(lng, ns, function(err, res) {
-            // add key to resStore
-            var keys = key.split('.');
-            var x = 0;
-            var value = res.resources;
+            var value = fetched[lng][ns];
             while (keys[x]) {
                 if (x === keys.length - 1) {
                     value = value[keys[x]] = newValue;
@@ -122,12 +109,41 @@ module.exports = {
                 x++;
             }
 
-            self.saveResourceSet(lng, ns, res, function(err) {
+            self.saveResourceSet(lng, ns, fetched[lng][ns], function(err) {
                 if (err) {
                     self.functions.log('error updating key `' + key + '` to mongoDb');
                 } else {
-                    self.functions.log('updated key `' + key + '` with value `' + defaultValue + '` to mongoDb');
+                    self.functions.log('updated key `' + key + '` with value `' + newValue + '` to mongoDb');
                 }
+                if (callback) callback(err);
+            });
+        });
+    },
+
+    postRemove: function(lng, ns, key, callback) {
+        var self = this;
+
+        this.load([lng], {ns: {namespaces: [ns]}}, function(err, fetched) {
+            // change key in resStore
+            var keys = key.split('.');
+            var x = 0;
+            var value = fetched[lng][ns];
+            while (keys[x]) {
+                if (x === keys.length - 1) {
+                    delete value[keys[x]];
+                } else {
+                    value = value[keys[x]] = value[keys[x]] || {};
+                }
+                x++;
+            }
+
+            self.saveResourceSet(lng, ns, fetched[lng][ns], function(err) {
+                if (err) {
+                    self.functions.log('error removing key `' + key + '` to mongoDb');
+                } else {
+                    self.functions.log('removed key `' + key + '` to mongoDb');
+                }
+                if (callback) callback(err);
             });
         });
     }
