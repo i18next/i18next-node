@@ -11,19 +11,25 @@ describe('i18next.server.spec', function() {
   before(function(done) {
     opts = {
       lng: 'en-US',
-      preload: [],
+      preload: ['en', 'de'],
       lowerCaseLng: false,
       ns: 'translation',
       resGetPath: 'test/locales/__lng__/__ns__.json',
       resSetPath: 'test/locales/__lng__/new.__ns__.json',
-      saveMissing: true,
+      saveMissing: false,
       resStore: false,
+      detectLngFromPath: 0,
       debug: false
     };
 
     app = express();
 
-    i18n.init(opts, function(t) { done(); });
+    i18n.init(opts, function(t) {
+      i18n.addRoute('/:lng/route.key1/route.key2', ['de', 'en'], app, 'get', function(req, res) {
+        res.end();
+      });
+      done();
+    });
 
     // Configuration
     app.configure(function() {
@@ -35,11 +41,19 @@ describe('i18next.server.spec', function() {
         app.set('views', __dirname);
     });
 
+    app.get('/:lng/test', function(req, res) {
+      res.end();
+    });
+
     i18n.registerAppHelper(app)
       .serveClientScript(app)
       .serveDynamicResources(app)
       .serveMissingKeyRoute(app)
       .serveChangeKeyRoute(app);
+
+    i18n.addRoute('/:lng/route.key1/route.key2', ['de', 'en'], app, 'get', function(req, res) {
+      res.end();
+    });
   
   });
 
@@ -57,6 +71,54 @@ describe('i18next.server.spec', function() {
 
       it('it should have i18n appended', function() {
         expect(app.locals.i18n).to.be.ok();
+      });
+
+    });
+
+    describe('GET added routes /:lng/key1/key2', function() {
+
+      it('respond with ok for de', function(done) {
+
+        request(app)
+          .get('/de/key1_de/key2_de')
+          .set('Accept', 'text/javascript')
+          .expect(200, done);
+
+      });
+
+      it('respond with ok for en', function(done) {
+
+        request(app)
+          .get('/en/key1_en/key2_en')
+          .set('Accept', 'text/javascript')
+          .expect(200, done);
+
+      });
+
+      it('respond with nok for ru', function(done) {
+
+        request(app)
+          .get('/ru/key1_ru/key2_ru')
+          .set('Accept', 'text/javascript')
+          .expect(404, done);
+
+      });
+
+    });
+
+    describe('GET /:lng/... should set lng', function() {
+
+      it('respond with ok', function(done) {
+
+        request(app)
+          .get('/de-CH/test')
+          .set('Accept', 'text/javascript')
+          .expect(200, done);
+
+      });
+
+      it('it should set lng', function() {
+        expect(i18n.lng()).to.be('de-CH');
       });
 
     });
