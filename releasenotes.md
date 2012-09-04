@@ -1,3 +1,6 @@
+### v1.5.6
+- bugfix in detectlng
+
 ### v1.5.5
 - updated client
 - detectLng from route: detectLngFromPath index of route path, eg. 0 -> /en-US/myPage.html, 1 -> /cms/en-US/myPage.html
