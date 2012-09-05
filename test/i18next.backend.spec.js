@@ -74,6 +74,9 @@ function initBackend(callback) {
   sync = require('../lib/filesync');
   callback();
 
+  // use gettext
+  // sync = require('../backends/gettext/index');
+  // callback();
 
   // use mongoDb
   // sync = require('../backends/mongoDb/index');
@@ -100,6 +103,7 @@ describe('i18next.backend.spec', function() {
       lowerCaseLng: false,
       ns: 'ns.test',
       resGetPath: 'test/locales/__lng__/__ns__.json',
+      //resGetPath: 'test/locales/__lng__/__ns__.po',
       resSetPath: 'test/locales/__lng__/__ns__.json',
       returnObjectTrees: false,
       debug: false
