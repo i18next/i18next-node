@@ -23,6 +23,15 @@ module.exports = {
 
         options = mergeOptions(options, defaults);
 
+        var defaultOpt = {
+            auto_reconnect: true,
+            ssl: false
+        };
+
+        options.options = options.options || {};
+
+        options.options = mergeOptions(options.options, defaultOpt);
+
         var self = this;
 
         var server = new mongo.Server(options.host, options.port, {});
@@ -30,12 +39,20 @@ module.exports = {
             if (err) {
                 if (callback) callback(err);
             } else {
-                self.isConnected = true;
-                self.client = client;
-                
-                self.resources = new mongo.Collection(client, options.resCollectionName);
+                var finish = function() {
+                    self.client = client;
+                    self.isConnected = true;
+                    
+                    self.resources = new mongo.Collection(client, options.resCollectionName);
 
-                if (callback) callback(null, self);
+                    if (callback) callback(null, self);
+                };
+
+                if (options.username) {
+                    client.authenticate(options.username, options.password, finish);
+                } else {
+                    finish();
+                }
             }        
         });
     },
