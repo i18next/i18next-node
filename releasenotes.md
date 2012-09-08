@@ -1,3 +1,6 @@
+### v1.5.7
+- bugfix translations won't be in users language in async cases
+
 ### v1.5.6
 - bugfix in detectlng
 
