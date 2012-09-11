@@ -1,5 +1,6 @@
 ### v1.5.7
 - bugfix translations won't be in users language in async cases
+- bugfix use resSetPath instead of get to save missing resources
 
 ### v1.5.6
 - bugfix in detectlng
