@@ -50,10 +50,6 @@ describe('i18next.server.spec', function() {
       .serveDynamicResources(app)
       .serveMissingKeyRoute(app)
       .serveChangeKeyRoute(app);
-
-    i18n.addRoute('/:lng/route.key1/route.key2', ['de', 'en'], app, 'get', function(req, res) {
-      res.end();
-    });
   
   });
 

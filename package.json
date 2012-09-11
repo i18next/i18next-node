@@ -2,7 +2,7 @@
   "author": "Jan Muehlemann <jan.muehlemann@gmail.com>",
   "name": "i18next",
   "description": "i18n made easy - full featured: middleware, template support plus clientside use",
-  "version": "1.5.6",
+  "version": "1.5.7",
   "repository": {
     "type": "git",
     "url": "git://github.com/jamuhl/i18next-node.git"
@@ -24,6 +24,7 @@
     , "sinon": ">=0.0.1"
     , "supertest": ">=0.0.1"
     , "express": ">=0.0.1"
+    , "jade": ">=0.0.1"
   },
   "scripts": {
     "test": "make test"
