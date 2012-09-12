@@ -1,3 +1,7 @@
+### v1.5.8
+- updated client
+- updated i18next-webtranslate
+
 ### v1.5.7
 - bugfix translations won't be in users language in async cases
 - bugfix use resSetPath instead of get to save missing resources
