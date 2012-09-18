@@ -1,7 +1,7 @@
 {
     "author": "Jan Muehlemann"
   , "name": "i18next.redis"
-  , "version": "1.5.0"
+  , "version": "1.5.9"
   , "contributors": [ 
     { "name": "Jan Muehlemann", "email": "jan.muehlemann@gmail.com" }
   ]
