@@ -14,6 +14,7 @@ describe('i18next.init.spec', function() {
       lowerCaseLng: false,
       ns: 'translation',
       resGetPath: 'test/locales/__lng__/__ns__.json',
+      saveMissing: false,
       resStore: false,
       returnObjectTrees: false,
       debug: false

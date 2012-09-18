@@ -15,6 +15,7 @@ describe('i18next.t.spec', function() {
       ns: 'translation',
       resGetPath: 'test/locales/__lng__/__ns__.json',
       resStore: false,
+      saveMissing: false,
       returnObjectTrees: false,
       debug: false
     };

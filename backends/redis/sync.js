@@ -90,7 +90,7 @@ module.exports = {
             } else {
                 self.functions.log('saved missingKey `' + key + '` with value `' + defaultValue + '` to redis');
             }
-            if (callback) callback(err);
+            if (typeof callback === 'function') callback(err);
         });
     },
 
@@ -117,7 +117,7 @@ module.exports = {
                 } else {
                     self.functions.log('updated key `' + key + '` with value `' + newValue + '` to redis');
                 }
-                if (callback) callback(err);
+                if (typeof callback === 'function') callback(err);
             });
         });
     },
@@ -145,7 +145,7 @@ module.exports = {
                 } else {
                     self.functions.log('removed key `' + key + '` to redis');
                 }
-                if (callback) callback(err);
+                if (typeof callback === 'function') callback(err);
             });
         });
     }

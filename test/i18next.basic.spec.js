@@ -14,6 +14,8 @@ describe('i18next.basic.spec', function() {
       lowerCaseLng: false,
       ns: 'translation',
       resGetPath: 'test/locales/__lng__/__ns__.json',
+      resSetPath: 'test/locales/__lng__/new.__ns__.json',
+      saveMissing: false,
       resStore: false,
       returnObjectTrees: false,
       debug: false
@@ -47,28 +49,40 @@ describe('i18next.basic.spec', function() {
 
     describe('preloading multiple languages', function() {
 
-        var spy; 
+      var spy; 
 
-        beforeEach(function(done) {
-          i18n.backend(filesync);
-          spy = sinon.spy(filesync, 'fetchOne');
-          i18n.init(opts, function(t) { done(); });
-        });
+      beforeEach(function(done) {
+        i18n.backend(filesync);
+        spy = sinon.spy(filesync, 'fetchOne');
+        i18n.init(opts, function(t) { done(); });
+      });
 
-        afterEach(function() {
-          spy.restore();
-        });
+      afterEach(function() {
+        spy.restore();
+      });
 
-        it('it should preload resources for languages', function(done) {
-          spy.reset();
-          i18n.preload('it-IT', function(t) {
-              expect(spy.callCount).to.be(2); // it-IT, it
-              done();
-          });
-
+      it('it should preload resources for languages', function(done) {
+        spy.reset();
+        i18n.preload('it-IT', function(t) {
+            expect(spy.callCount).to.be(2); // it-IT, it
+            done();
         });
 
       });
+
+    });
+
+    describe('save missing key', function() {
+
+      beforeEach(function(done) {
+        i18n.init(i18n.functions.extend(opts, { saveMissing: true }), function(t) { done(); } );
+      });
+
+      it('it shouldn\'t throw an error', function() {
+        expect(i18n.t('missingTest')).to.be('missingTest');
+      });
+
+    });
 
   });
 

@@ -1,3 +1,7 @@
+### v1.5.9
+- bugfix  throws error on savemissing key
+- force lng from path (issue 32)
+
 ### v1.5.8
 - updated client
 - updated i18next-webtranslate
