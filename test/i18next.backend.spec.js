@@ -74,6 +74,10 @@ function initBackend(callback) {
   sync = require('../lib/filesync');
   callback();
 
+  // use yaml
+  // sync = require('../backends/yaml/index');
+  // callback();
+
   // use gettext
   // sync = require('../backends/gettext/index');
   // callback();
@@ -104,14 +108,16 @@ describe('i18next.backend.spec', function() {
       ns: 'ns.test',
       resGetPath: 'test/locales/__lng__/__ns__.json',
       //resGetPath: 'test/locales/__lng__/__ns__.po',
+      //resGetPath: 'test/locales/__lng__/__ns__.yml',
       resSetPath: 'test/locales/__lng__/__ns__.json',
       returnObjectTrees: false,
       debug: false
     };
 
     initBackend(function() {
+      i18n.backend(sync);
       i18n.init(opts, function(t) {
-        sync = i18n.functions.extend(i18n.sync, sync);
+        sync = i18n.sync;
         clear(done);
       });
     });

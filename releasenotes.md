@@ -1,3 +1,7 @@
+### v1.5.10
+- changable querystring param to look language up from
+- yaml backend
+
 ### v1.5.9
 - bugfix  throws error on savemissing key
 - force lng from path (issue 32)
