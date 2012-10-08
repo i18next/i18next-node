@@ -1,3 +1,6 @@
+### v1.5.11
+- fixed bug for returning objTree in combination with namespace
+
 ### v1.5.10
 - changable querystring param to look language up from
 - yaml backend
