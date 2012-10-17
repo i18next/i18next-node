@@ -1,3 +1,6 @@
+### v1.5.12
+- ignore routes inside handler
+
 ### v1.5.11
 - fixed bug for returning objTree in combination with namespace
 
