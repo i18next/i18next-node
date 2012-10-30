@@ -1,3 +1,8 @@
+### v1.5.13
+disable cookie usage by setting init option useCookie to false
+updated client
+updated webtranslate
+
 ### v1.5.12
 - ignore routes inside handler
 
