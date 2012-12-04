@@ -1,7 +1,13 @@
+### v1.5.14
+- set cookie name
+- some small fixes
+- set supportedlngs for seo routes
+- updated client
+
 ### v1.5.13
-disable cookie usage by setting init option useCookie to false
-updated client
-updated webtranslate
+- disable cookie usage by setting init option useCookie to false
+- updated client
+- updated webtranslate
 
 ### v1.5.12
 - ignore routes inside handler
