@@ -1,3 +1,6 @@
+### v1.5.15
+- fixed missing argument in remove route
+
 ### v1.5.14
 - set cookie name
 - some small fixes
