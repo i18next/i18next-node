@@ -25,6 +25,10 @@ html(lang="en")
         h5 with value insert t('app.insert', {youAre: 'great'})
         span= i18n.t('app.insert', {youAre: 'great'})
 
+        h5 sprintf support
+        span= t('ns.common:sprintf', { postProcess: 'sprintf', sprintf: ['a', 'b', 'c', 'd'] })
+        button(title!=t('ns.common:sprintf', { postProcess: 'sprintf', sprintf: ['a', 'b', 'c', 'd'] })) on title
+
         h5 with plural t('app.child', {count: n})
         span= t('app.child', {count: 1}) + ' - '
         span= t('app.child', {count: 3})

@@ -8,5 +8,6 @@
 		"placeholder": "translated placeholder",
 		"title": "translated title"	
 	},
-	"add": "add"
+	"add": "add",
+	"sprintf": "Hello %s, %s, %s and %s"
 }

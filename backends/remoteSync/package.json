@@ -1,6 +1,6 @@
 {
     "author": "Jan Muehlemann"
-  , "name": "i18next.remoteSync"
+  , "name": "i18next.remotesync"
   , "version": "1.5.14"
   , "contributors": [ 
     { "name": "Jan Muehlemann", "email": "jan.muehlemann@gmail.com" }

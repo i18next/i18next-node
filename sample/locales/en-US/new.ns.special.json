@@ -8,5 +8,6 @@
         "friend_context_male": "A boyfriend",
         "friend_context_female": "A girlfriend",
         "room": "Room 21"
-    }
+    },
+    "sprintf": "sprintf"
 }
