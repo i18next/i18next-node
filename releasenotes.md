@@ -1,5 +1,6 @@
 ### v1.5.15
 - fixed missing argument in remove route
+- updated client
 
 ### v1.5.14
 - set cookie name
