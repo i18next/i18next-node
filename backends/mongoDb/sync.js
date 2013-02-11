@@ -35,7 +35,7 @@ module.exports = {
         var self = this;
 
         var server = new mongo.Server(options.host, options.port, options.options);
-        new mongo.Db(options.dbName , server, {}).open(function(err, client) {
+        new mongo.Db(options.dbName, server, {safe: true}).open(function(err, client) {
             if (err) {
                 if (callback) callback(err);
             } else {
