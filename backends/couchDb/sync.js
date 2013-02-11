@@ -90,7 +90,7 @@ module.exports = {
 
     postMissing: function(lng, ns, key, defaultValue, callback) {
         // add key to resStore
-        var keys = key.split('.');
+        var keys = key.split(this.options.keyseparator);
         var x = 0;
         var value = this.resStore[lng][ns];
         while (keys[x]) {
@@ -118,7 +118,7 @@ module.exports = {
 
         this.load([lng], {ns: {namespaces: [ns]}}, function(err, fetched) {
             // change key in resStore
-            var keys = key.split('.');
+            var keys = key.split(self.options.keyseparator);
             var x = 0;
             var value = fetched[lng][ns];
             while (keys[x]) {
@@ -146,7 +146,7 @@ module.exports = {
 
         this.load([lng], {ns: {namespaces: [ns]}}, function(err, fetched) {
             // change key in resStore
-            var keys = key.split('.');
+            var keys = key.split(self.options.keyseparator);
             var x = 0;
             var value = fetched[lng][ns];
             while (keys[x]) {
