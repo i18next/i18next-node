@@ -1,3 +1,7 @@
+### v1.5.16
+- option to disable lng lookup from headers
+- fixed setting supported lngs via options
+
 ### v1.5.15
 - fixed missing argument in remove route
 - updated client
