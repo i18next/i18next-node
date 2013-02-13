@@ -69,7 +69,7 @@ module.exports = {
         });
     },
 
-    postMissing: function(lng, ns, key, defaultValue, callback) {
+    saveMissing: function(lng, ns, key, defaultValue, callback) {
         // add key to resStore
         var keys = key.split(this.options.keyseparator);
         var x = 0;

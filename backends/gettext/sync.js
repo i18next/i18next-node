@@ -29,7 +29,7 @@ module.exports = {
         });
     },
 
-    postMissing: function(lng, ns, key, defaultValue, callback) {
+    saveMissing: function(lng, ns, key, defaultValue, callback) {
         console.log('not implemented');
         callback('not implemented');
     },

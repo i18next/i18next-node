@@ -80,7 +80,8 @@ html(lang="en")
                 useLocalStorage: false,
                 resGetPath: 'locales/resources.json?lng=__lng__&ns=__ns__',
                 dynamicLoad: true,
-                sendMissing: true
+                sendMissing: true,
+                sendMissingTo: 'current'
             };
 
             if (qsParm.setLng) options.lng = qsParm.setLng;

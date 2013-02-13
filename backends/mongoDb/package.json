@@ -1,7 +1,7 @@
 {
     "author": "Jan Muehlemann"
   , "name": "i18next.mongoDb"
-  , "version": "1.5.9"
+  , "version": "1.6.0"
   , "contributors": [ 
     { "name": "Jan Muehlemann", "email": "jan.muehlemann@gmail.com" }
   ]

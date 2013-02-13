@@ -1,4 +1,5 @@
 ### v1.5.16
+- sendMissingTo Option is now working on server too
 - option to disable lng lookup from headers
 - fixed setting supported lngs via options
 - fixed setting options for webtranslate

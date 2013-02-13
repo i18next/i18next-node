@@ -1,7 +1,7 @@
 {
     "author": "Jan Muehlemann"
   , "name": "i18next.gettext"
-  , "version": "1.5.5"
+  , "version": "1.6.0"
   , "contributors": [ 
     { "name": "Jan Muehlemann", "email": "jan.muehlemann@gmail.com" }
   ]
