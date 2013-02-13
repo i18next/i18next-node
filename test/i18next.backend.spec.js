@@ -146,7 +146,7 @@ describe('i18next.backend.spec', function() {
 
       it('it should callback without error', function(done) {
 
-        sync.postMissing('en-US', 'ns.test', 'testKey', 'testTrans', function(err) {
+        sync.saveMissing('en-US', 'ns.test', 'testKey', 'testTrans', function(err) {
           expect(err).to.not.be.ok();
           done();
         });
@@ -155,7 +155,7 @@ describe('i18next.backend.spec', function() {
 
       it('it should have inserted the new key', function(done) {
 
-        sync.postMissing('en-US', 'ns.test', 'testKey', 'testTrans', function(err) {
+        sync.saveMissing('en-US', 'ns.test', 'testKey', 'testTrans', function(err) {
           sync.fetchOne('en-US', 'ns.test', function(err, data) {
             expect(data.testKey).to.eql('testTrans');
             done();
@@ -194,7 +194,7 @@ describe('i18next.backend.spec', function() {
 
       it('it should callback without error', function(done) {
 
-        sync.postMissing('en-US', 'ns.test', 'toRemove', 'testTrans', function(err) {
+        sync.saveMissing('en-US', 'ns.test', 'toRemove', 'testTrans', function(err) {
           sync.postRemove('en-US', 'ns.test', 'toRemove', function(err) {
             expect(err).to.not.be.ok();
             done();
@@ -205,7 +205,7 @@ describe('i18next.backend.spec', function() {
 
       it('it should have removed the key', function(done) {
 
-        sync.postMissing('en-US', 'ns.test', 'toRemove', 'testTrans', function(err) {
+        sync.saveMissing('en-US', 'ns.test', 'toRemove', 'testTrans', function(err) {
           sync.postRemove('en-US', 'ns.test', 'toRemove', function(err) {
             sync.fetchOne('en-US', 'ns.test', function(err, data) {
               expect(data.testKey).to.not.be.ok();
