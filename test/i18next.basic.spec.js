@@ -11,6 +11,7 @@ describe('i18next.basic.spec', function() {
     opts = {
       lng: 'en-US',
       preload: [],
+      supportedLngs: [],
       lowerCaseLng: false,
       ns: 'translation',
       resGetPath: 'test/locales/__lng__/__ns__.json',

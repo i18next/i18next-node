@@ -104,6 +104,7 @@ describe('i18next.backend.spec', function() {
     var opts = {
       lng: 'en-US',
       preload: [],
+      supportedLngs: [],
       lowerCaseLng: false,
       ns: 'ns.test',
       resGetPath: 'test/locales/__lng__/__ns__.json',
