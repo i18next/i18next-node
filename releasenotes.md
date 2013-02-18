@@ -1,4 +1,5 @@
 ### v1.6.0
+- supportedLngs now used for all detect functions too
 - sendMissingTo Option is now working on server too
 - option to disable lng lookup from headers
 - fixed setting supported lngs via options
