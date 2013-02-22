@@ -2,7 +2,8 @@ var i18n = require('../index')
   , expect = require('expect.js')
   , sinon = require('sinon')
   , request = require('supertest')
-  , express = require('express');
+  , express = require('express')
+  , filesync = require('../lib/filesync');
 
 describe('i18next.server.spec', function() {
 
@@ -11,20 +12,29 @@ describe('i18next.server.spec', function() {
   before(function(done) {
     opts = {
       lng: 'en-US',
+      fallbackLng: 'dev',
+      load: 'all',
       preload: ['en', 'de'],
       supportedLngs: [],
       lowerCaseLng: false,
       ns: 'translation',
+      fallbackToDefaultNS: false,
       resGetPath: 'test/locales/__lng__/__ns__.json',
       resSetPath: 'test/locales/__lng__/new.__ns__.json',
       saveMissing: false,
       resStore: false,
-      detectLngFromPath: 0,
-      debug: false
+      getAsync: false,
+      returnObjectTrees: false,
+      interpolationPrefix: '__',
+      interpolationSuffix: '__',
+      postProcess: '',
+      debug: false,
+      detectLngFromPath: 0
     };
 
     app = express();
 
+    i18n.backend(filesync);
     i18n.init(opts, function(t) {
       i18n.addRoute('/:lng/route.key1/route.key2', ['de', 'en'], app, 'get', function(req, res) {
         res.end();
