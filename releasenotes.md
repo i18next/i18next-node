@@ -1,3 +1,7 @@
+### v1.6.1
+- support for null values in resources
+- reuse tests from client script
+
 ### v1.6.0
 - supportedLngs now used for all detect functions too
 - sendMissingTo Option is now working on server too
