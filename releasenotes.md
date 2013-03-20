@@ -1,3 +1,7 @@
+### v1.6.3
+- update with pre client
+- fixes possible language error caused by wrong lng set in cookie during handle
+
 ### v1.6.1
 - support for null values in resources
 - reuse tests from client script
