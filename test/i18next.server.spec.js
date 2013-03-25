@@ -66,22 +66,6 @@ describe('i18next.server.spec', function() {
 
   describe('server functionality', function() {
 
-    describe('i18next registered app.helper / app.locals', function() {
-
-      it('it should have t function appended', function() {
-        expect(app.locals.t).to.be.ok();
-      });
-
-      it('it should translate with appended function', function() {
-        expect(app.locals.t('simple_en-US')).to.be('ok_from_en-US');
-      });
-
-      it('it should have i18n appended', function() {
-        expect(app.locals.i18n).to.be.ok();
-      });
-
-    });
-
     describe('GET added routes /:lng/key1/key2', function() {
 
       it('respond with ok for de', function(done) {
