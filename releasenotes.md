@@ -1,3 +1,6 @@
+### v1.6.4
+- fixes concurrancy issue for express version < 3
+
 ### v1.6.3
 - update with pre client
 - fixes possible language error caused by wrong lng set in cookie during handle
