@@ -1,0 +1,19 @@
+{
+  "name": "i18next",
+  "version": "1.6.0",
+  "main": "./release/i18next-1.6.0.min.js",
+  "dependencies": {},
+  "ignore": [
+    "test/",
+    "spec/",
+    "src/",
+    "sample/",
+    "report/",
+    "buildtasks/",
+    ".gitignore",
+    "grunt.js",
+    "package.json",
+    "testem.yml",
+    "**/*.zip"
+  ]
+}
