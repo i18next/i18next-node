@@ -1,121 +1,67 @@
 # Introduction
 
-Project goal is to provide an easy way to translate a website on clientside:
+[![Build Status](https://secure.travis-ci.org/jamuhl/i18next-node.png)](http://travis-ci.org/jamuhl/i18next-node)
 
-- fetch resources from server
-- fetch each resource file individually (static) or all once via dynamicRoute
-- apply translation to HTML tags with the _data-i18n_ attribute
-- post missing key-value pairs to server (for easy development -> just translate the new keys)
-- search for key _en-US_ first, then in _en_, then in fallback language (or de-DE, de , fallback)
+Project goal is to provide the same easy way to translate a website on serverside like in 
+[i18next](https://github.com/jamuhl/i18next) on the clientside:
 
-Check out the [documentation](http://i18next.com)
+- Translation inside your server code or template
+- loading resourcefiles
+- update resourcefiles with missing strings
+- interpolation, plurals, nesting or resources
+- serve the same resources to the clientside
 
-# Usage
+# installation
 
-Assuming we loaded __en-US__, __en__ and __dev__ resources for two namespaces ('ns.special' and 'ns.common'):
+	npm install i18next
 
-	// given loaded and merged dictionaries in i18next.js to:
-	{
-	    "en_US": {
-	        "ns.special": {
-	            "app": {
-	                "name": "i18n",
-	                "insert": "you are __youAre__",
-	                "child": "__count__ child",
-	                "child_plural": "__count__ children"
-	            }
-	        },
-	        "ns.common": {}
-	    },
-	    "en": {
-	        "ns.special": {
-	            "app": {
-	                "area": "Area 51"
-	            }
-	        },
-	        "ns.common": {}
-	    },
-	    "dev": {
-	        "ns.common": {
-	            "app": {
-	                "company": {
-	                    "name": "my company"
-	                }
-	            },
-	            "add": "add"
-	        },
-	        "ns.special": {
-	            "nav": {
-	                "1": "link1",
-	                "2": "link2",
-	                "home": "home"
-	            }
-	        }
-	    }
-	}
+# usage
 
-## you can translate using `$.t(key, [options])`
+First require the module and init i18next:
 
-	$.i18n.init({
-	    lng: 'en-US',
-	    ns: { namespaces: ['ns.common', 'ns.special'], defaultNs: 'ns.special'}
-	}, function() {
-	    $.t('app.name'); // -> i18n (from en-US resourcefile)
-	    $.t('app.area'); // -> Area 51 (from en resourcefile)
-	    $.t('ns.common:app.company.name'); // -> my company (from dev resourcefile)
-	    $.t('ns.common:add'); // -> add (from dev resourcefile)
+	var i18next = require('i18next');
+	i18next.init(); // for options see i18next-node gh-page
+
+Register the express middleware, so we can check current language settings:
+
+	// Configuration
+	app.configure(function() {
+	    app.use(express.bodyParser());
+	    app.use(i18next.handle);
+	    app.use(app.router);
+
+	    [...]
 	});
 
-### insert values into your translation
+Register AppHelper so you can use the translate function in your template:
 
-	$.t('app.insert', {youAre: 'great'}) // -> you are great
+	i18next.registerAppHelper(app)
 
-### support for plurals
+Now you can (depending on your template language) do something like this in you template:
 
-	$.t('app.child', {count: 1}) // -> 1 child
-	$.t('app.child', {count: 3}) // -> 3 children
+	// sample in jade
+	body
+        span= t('app.name')
 
-## or you can just `$('.mySelector').i18n()` assuming you have added the `data-i18n="key"` attribute to your elements
+To serve the clientside script and needed routes for resources and missing keys:
 
-	// given
-	<ul class="nav">
-		<li class="active"><a href="#" data-i18n="nav.home">home</a></li>
-		<li><a href="#" data-i18n="nav.1">link1</a></li>
-		<li><a href="#" data-i18n="nav.2">link2</a></li>
-	</ul>
+	i18next.serveClientScript(app)
+	    .serveDynamicResources(app)
+	    .serveMissingKeyRoute(app);
 
-	// Run the following javascript to translate all elements having the _data-i18n_ attribute:
-	$.i18n.init({
-	    lng: 'en-US',
-	    ns: { namespaces: ['ns.common', 'ns.special'], defaultNs: 'ns.special'}
-	}, function() {
-	    $('.nav').i18n();
-	});
+now you can add the script to you page and use i18next on the client like on the server:
 
-For missing keys (if the option 'addMissing' is set to true) will be send to server with actual text as defaultValue.
+	script(src='i18next/i18next.js', type='text/javascript')
 
-# Sample usage
+    $.i18n.init([options], function() { 
+        $('#appname').text($.t('app.name'));
+    });
 
-In the folder you find one static sample.
+for more information on clientside usage have a look at [i18next](http://jamuhl.github.com/i18next/)
 
-# serverside integrations
+# sample
 
-[i18next-node](https://github.com/jamuhl/i18next-node) is bringing i18next to node.js
-
-# Inspiration
-
-- [jsperanto](https://github.com/jpjoyal/jsperanto).
-
-# Building
-To build your own copy of i18next, check out the repository and:
-
-	git clone https://github.com/jamuhl/i18next.git
-    cd i18next
-    npm install grunt -g
-    npm install
-    grunt
-    
-The grunt command will build i18next into the bin/ and release/ folders.
+- [i18next-node_Sample](https://github.com/jamuhl/i18next-node/tree/master/sample)
 
 # License
 

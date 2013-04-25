@@ -1,26 +1,34 @@
 {
-  "author": "jamuhl"
-  , "name": "i18next-clientscript"
-  , "version": "1.6.0"
-  , "private": false
-  , "main": "server.js"
-  , "engines": {
-        "node": "~v0.4.12"
-    }
-  , "dependencies": { }
-  , "devDependencies": {
-      "grunt": "*"
-    , "grunt-rigger": "*"
-    , "grunt-contrib": ">=0.1.0"
-    , "grunt-shell": ">=0.1.0"
-    , "gruntacular": ">=0.1.0"
-    , "express": ">= 0.0.1"
-    , "async": ">= 0.1.18"
-    , "lodash": ">= 0.5.x"
-    , "zipstream": ">=0.2.1"
-    , "underscore": ">=0.2.1"
-  }
-  , "scripts": {
-    "test": "testacular start"
+  "author": "Jan Muehlemann <jan.muehlemann@gmail.com>",
+  "name": "i18next",
+  "description": "i18n made easy - full featured: middleware, template support plus clientside use",
+  "version": "1.6.4",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jamuhl/i18next-node.git"
+  },
+  "private": false,
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "engines": {
+    "node": ">= 0.4.0"
+  },
+  "dependencies": {
+    "cookies": ">= 0.2.2"
+  },
+  "devDependencies": {
+      "mocha": ">= 0.10.2"
+    , "expect.js": ">=0.0.1"
+    , "sinon": ">=0.0.1"
+    , "supertest": ">=0.0.1"
+    , "express": ">=0.0.1"
+    , "jade": ">=0.0.1"
+    , "benchmark": ">=0.0.1"
+    , "microtime": ">=0.0.1"
+  },
+  "scripts": {
+    "test": "make test"
   }
 }

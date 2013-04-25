@@ -1,0 +1,16 @@
+{
+	"nav": {
+        "home": "home de",
+        "1": "link 1 de",
+        "2": "link 2 de"
+    },
+    "app": {
+      "name": "i18n",
+      "insert": "du bist __youAre__",
+      "child": "__count__ Kind",
+      "child_plural": "__count__ Kinder",
+      "friend_context": "Ein Freund",
+      "friend_context_male": "Ein Freund",
+      "friend_context_female": "Eine Freundin"
+    }
+}
