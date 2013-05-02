@@ -1,7 +1,11 @@
+// i18next, v1.6.1
+// Copyright (c)2013 Jan Mühlemann (jamuhl).
+// Distributed under MIT license
+// http://i18next.com
 //////////////////////
 // HINT
 //
-// you need to replace 'fetchOne' with 'fetchOne' to use this on server
+// you need to replace '_fetchOne' with 'fetchOne' to use this on server
 //
 
 var i18n = require('../index')
@@ -16,17 +20,18 @@ describe('i18next.functions', function() {
     opts = {
       lng: 'en-US',
       fallbackLng: 'dev',
+      fallbackNS: [],
+      fallbackToDefaultNS: false,
+      fallbackOnNull: true,
       load: 'all',
       preload: [],
       supportedLngs: [],
       lowerCaseLng: false,
       ns: 'translation',
-      fallbackToDefaultNS: false,
       resGetPath: 'test/locales/__lng__/__ns__.json',
       resSetPath: 'test/locales/__lng__/new.__ns__.json',
       saveMissing: false,
       resStore: false,
-      getAsync: false,
       returnObjectTrees: false,
       interpolationPrefix: '__',
       interpolationSuffix: '__',
@@ -109,6 +114,10 @@ describe('i18next.functions', function() {
   
       it('it should postprocess the translation by passing in postProcess name to t function', function() {
         expect(i18n.t('simpleTest', {postProcess: 'myProcessor'})).to.be('ok_from_postprocessor');
+      });
+  
+      it('it should postprocess on default value', function() {
+        expect(i18n.t('notFound', {defaultValue: 'not processed', postProcess: 'myProcessor'})).to.be('ok_from_postprocessor');
       });
   
       describe('or setting it as default on init', function() {

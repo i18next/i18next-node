@@ -1,3 +1,7 @@
+// i18next, v1.6.1
+// Copyright (c)2013 Jan Mühlemann (jamuhl).
+// Distributed under MIT license
+// http://i18next.com
 var i18n = require('../index')
   , expect = require('expect.js')
   , sinon = require('sinon');
@@ -10,17 +14,18 @@ describe('i18next.translate', function() {
     opts = {
       lng: 'en-US',
       fallbackLng: 'dev',
+      fallbackNS: [],
+      fallbackToDefaultNS: false,
+      fallbackOnNull: true,
       load: 'all',
       preload: [],
       supportedLngs: [],
       lowerCaseLng: false,
       ns: 'translation',
-      fallbackToDefaultNS: false,
       resGetPath: 'test/locales/__lng__/__ns__.json',
       resSetPath: 'test/locales/__lng__/new.__ns__.json',
       saveMissing: false,
       resStore: false,
-      getAsync: false,
       returnObjectTrees: false,
       interpolationPrefix: '__',
       interpolationSuffix: '__',
@@ -37,7 +42,7 @@ describe('i18next.translate', function() {
     };
     
     beforeEach(function(done) {
-      i18n.init(i18n.functions.extend(opts, { resStore: resStore, returnObjectTrees: true }),
+      i18n.init(i18n.functions.extend(opts, { resStore: resStore, returnObjectTrees: true, fallbackOnNull: false }),
         function(t) { done(); });
     });
   
@@ -45,6 +50,27 @@ describe('i18next.translate', function() {
       expect(i18n.t('key1')).to.be(null);
       expect(i18n.t('key2')).to.eql({ key3: null });
     });
+  
+    describe('with option fallbackOnNull = true', function() {
+      var resStore = {
+        dev: { translation: { key1: 'fallbackKey1', key2: { key3: 'fallbackKey3' } } },
+        en: { translation: { } },            
+        'en-US': { translation: { key1: null, key2: { key3: null } } }
+      };
+      
+      beforeEach(function(done) {
+        i18n.init(i18n.functions.extend(opts, { resStore: resStore, fallbackOnNull: true}),
+          function(t) { done(); });
+      });
+  
+      it('it should translate to fallback value', function() {
+        expect(i18n.t('key1')).to.be('fallbackKey1');
+        expect(i18n.t('key2.key3')).to.eql('fallbackKey3');
+      });
+  
+    });
+  
+  
   });
 
   describe('key with empty string value as valid option', function() {
@@ -133,7 +159,7 @@ describe('i18next.translate', function() {
       ), function(t) { done(); });
     });
   
-    it('it should return nested string', function() {
+    it('it should return nested string as usual', function() {
       expect(i18n.t('test.simple_en-US')).to.be('ok_from_en-US');
     });
   
@@ -146,11 +172,14 @@ describe('i18next.translate', function() {
       describe('with init flag', function() {
   
         var resStore = {
-          dev: { translation: {  } },
+          dev: { translation: {
+              test_dev: { res_dev: 'added __replace__' }
+            } 
+          },
           en: { translation: {  } },            
           'en-US': { 
             translation: {                      
-              test: { res: 'added __replace__' }
+              test_en_US: { res_en_US: 'added __replace__' }
             } 
           }
         };
@@ -163,9 +192,12 @@ describe('i18next.translate', function() {
         });
   
         it('it should return objectTree applying options', function() {
-          expect(i18n.t('test', { replace: 'two' })).to.eql({ 'res': 'added two' });
-          expect(i18n.t('test', { replace: 'three' })).to.eql({ 'res': 'added three' });
-          expect(i18n.t('test', { replace: 'four' })).to.eql({ 'res': 'added four' });
+          expect(i18n.t('test_en_US', { replace: 'two' })).to.eql({ 'res_en_US': 'added two' });
+          expect(i18n.t('test_en_US', { replace: 'three' })).to.eql({ 'res_en_US': 'added three' });
+          expect(i18n.t('test_en_US', { replace: 'four' })).to.eql({ 'res_en_US': 'added four' });
+  
+          // from fallback
+          expect(i18n.t('test_dev', { replace: 'two' })).to.eql({ 'res_dev': 'added two' });
         });
   
       });
@@ -268,6 +300,10 @@ describe('i18next.translate', function() {
         expect(i18n.t('interpolationTest4', { child: { grandChild: { three: '3'}}})).to.be('added 3');
       });
     
+      it("it should not escape HTML", function() {
+        expect(i18n.t('interpolationTest1', {toAdd: '<html>'})).to.be('added <html>');
+      });
+    
       it('it should replace passed in key/values on defaultValue', function() {
         expect(i18n.t('interpolationTest5', {defaultValue: 'added __toAdd__', toAdd: 'something'})).to.be('added something');
       });
@@ -320,7 +356,9 @@ describe('i18next.translate', function() {
             interpolationTest1: 'added *toAdd*',
             interpolationTest2: 'added *toAdd* *toAdd* twice',
             interpolationTest3: 'added *child.one* *child.two*',
-            interpolationTest4: 'added *child.grandChild.three*'
+            interpolationTest4: 'added *child.grandChild.three*',
+            interpolationTest5: 'added *count*',
+            interpolationTest5_plural: 'added *count*'
           } 
         }
       };
@@ -336,10 +374,82 @@ describe('i18next.translate', function() {
         expect(i18n.t('interpolationTest2', {toAdd: 'something', interpolationPrefix: '*', interpolationSuffix: '*'})).to.be('added something something twice');
         expect(i18n.t('interpolationTest3', { child: { one: '1', two: '2'}, interpolationPrefix: '*', interpolationSuffix: '*'})).to.be('added 1 2');
         expect(i18n.t('interpolationTest4', { child: { grandChild: { three: '3'}}, interpolationPrefix: '*', interpolationSuffix: '*'})).to.be('added 3');
+        expect(i18n.t('interpolationTest5', { count: 3, interpolationPrefix: '*', interpolationSuffix: '*'})).to.be('added 3');
       });
     
       it('it should replace passed in key/values on defaultValue', function() {
-        expect(i18n.t('interpolationTest5', {defaultValue: 'added *toAdd*', toAdd: 'something', interpolationPrefix: '*', interpolationSuffix: '*'})).to.be('added something');
+        expect(i18n.t('interpolationTest6', {defaultValue: 'added *toAdd*', toAdd: 'something', interpolationPrefix: '*', interpolationSuffix: '*'})).to.be('added something');
+      });
+    
+    });
+    
+    describe('default i18next way - with escaping interpolated arguments per default', function () {
+      var resStore = {
+        dev: { translation: {  } },
+        en: { translation: {  } },            
+        'en-US': { 
+          translation: {                      
+            interpolationTest1: 'added __toAdd__',
+            interpolationTest5: 'added __toAddHTML__',
+            interpolationTest6: 'added __child.oneHTML__',
+            interpolationTest7: 'added __toAddHTML__ __toAdd__'
+          } 
+        }
+      };
+    
+      beforeEach(function(done) {
+        i18n.init(i18n.functions.extend(opts, { 
+          resStore: resStore,
+          escapeInterpolation: true
+        }), function(t) { done(); });
+      });
+    
+      it("it should escape HTML", function() {
+        expect(i18n.t('interpolationTest1', {toAdd: '<html>'})).to.be('added &lt;html&gt;');
+      });
+    
+      it("it should not escape when HTML is suffixed", function() {
+        expect(i18n.t('interpolationTest5', {toAdd: '<html>'})).to.be('added <html>');
+        expect(i18n.t('interpolationTest6', { child: { one: '<1>'}})).to.be('added <1>');
+      });
+    
+      it("it should support both escaping and not escaping HTML", function() {
+        expect(i18n.t('interpolationTest7', {toAdd: '<html>', escapeInterpolation: true})).to.be('added <html> &lt;html&gt;');
+      });
+    
+    });
+    
+    describe('default i18next way - with escaping interpolated arguments per default via options', function () {
+      var resStore = {
+        dev: { translation: {  } },
+        en: { translation: {  } },            
+        'en-US': { 
+          translation: {                      
+            interpolationTest1: 'added __toAdd__',
+            interpolationTest5: 'added __toAddHTML__',
+            interpolationTest6: 'added __child.oneHTML__',
+            interpolationTest7: 'added __toAddHTML__ __toAdd__'
+          } 
+        }
+      };
+    
+      beforeEach(function(done) {
+        i18n.init(i18n.functions.extend(opts, { 
+          resStore: resStore
+        }), function(t) { done(); });
+      });
+    
+      it("it should escape HTML", function() {
+        expect(i18n.t('interpolationTest1', {toAdd: '<html>', escapeInterpolation: true})).to.be('added &lt;html&gt;');
+      });
+    
+      it("it should not escape when HTML is suffixed", function() {
+        expect(i18n.t('interpolationTest5', {toAdd: '<html>', escapeInterpolation: true})).to.be('added <html>');
+        expect(i18n.t('interpolationTest6', { child: { one: '<1>', escapeInterpolation: true}})).to.be('added <1>');
+      });
+    
+      it("it should support both escaping and not escaping HTML", function() {
+        expect(i18n.t('interpolationTest7', {toAdd: '<html>', escapeInterpolation: true})).to.be('added <html> &lt;html&gt;');
       });
     
     });
@@ -352,7 +462,8 @@ describe('i18next.translate', function() {
         'en-US': { 
           translation: {                      
             interpolationTest1: 'The first 4 letters of the english alphabet are: %s, %s, %s and %s',
-            interpolationTest2: 'Hello %(users[0].name)s, %(users[1].name)s and %(users[2].name)s'
+            interpolationTest2: 'Hello %(users[0].name)s, %(users[1].name)s and %(users[2].name)s',
+            interpolationTest3: 'The last letter of the english alphabet is %s'
           } 
         }
       };
@@ -365,6 +476,11 @@ describe('i18next.translate', function() {
       it('it should replace passed in key/values', function() {
         expect(i18n.t('interpolationTest1', {postProcess: 'sprintf', sprintf: ['a', 'b', 'c', 'd']})).to.be('The first 4 letters of the english alphabet are: a, b, c and d');
         expect(i18n.t('interpolationTest2', {postProcess: 'sprintf', sprintf: { users: [{name: 'Dolly'}, {name: 'Molly'}, {name: 'Polly'}] } })).to.be('Hello Dolly, Molly and Polly');
+      });
+    
+      it('it should recognize the sprintf syntax and automatically add the sprintf processor', function() {
+        expect(i18n.t('interpolationTest1', 'a', 'b', 'c', 'd')).to.be('The first 4 letters of the english alphabet are: a, b, c and d');
+        expect(i18n.t('interpolationTest3', 'z')).to.be('The last letter of the english alphabet is z');
       });
       
     });

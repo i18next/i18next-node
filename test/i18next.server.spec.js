@@ -13,6 +13,7 @@ describe('i18next.server.spec', function() {
     opts = {
       lng: 'en-US',
       fallbackLng: 'dev',
+      fallbackNS: [],
       load: 'all',
       preload: ['en', 'de'],
       supportedLngs: [],
