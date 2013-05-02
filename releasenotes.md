@@ -1,3 +1,6 @@
+### v1.6.6
+- fixing typo issue in client
+
 ### v1.6.5
 - updated client
 - set json intend via init options jsonIntend = integer
