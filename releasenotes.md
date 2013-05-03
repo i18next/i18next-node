@@ -1,3 +1,6 @@
+### v1.6.7
+- updated client
+
 ### v1.6.6
 - fixing typo issue in client
 
