@@ -60,7 +60,7 @@ i18n.init({
     resSetPath: 'locales/__lng__/new.__ns__.json',
     saveMissing: true,
     debug: true,
-    sendMissingTo: 'all'
+    sendMissingTo: 'fallback'
 });
 
 // Configuration
