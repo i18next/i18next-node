@@ -1,3 +1,7 @@
+### v1.6.8
+- fixes issue with fallbackLng = false in combination with sendMissingTo = fallback
+- updated client
+
 ### v1.6.7
 - updated client
 
