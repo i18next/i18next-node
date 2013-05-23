@@ -37,6 +37,10 @@ describe('i18next.basic.spec', function() {
         expect(i18n.t('missingTest')).to.be('missingTest');
       });
 
+      it('it should not throw error on unknown language namespace combination', function() {
+        expect(i18n.t('ns.unknown:missingTest')).to.be('ns.unknown:missingTest');
+      });
+
     });
 
   });

@@ -1,3 +1,6 @@
+### next
+- fixes issue with saveMissing key/value - it should not throw error on unknown language namespace combination
+
 ### v1.6.8
 - fixes issue with fallbackLng = false in combination with sendMissingTo = fallback
 - updated client
