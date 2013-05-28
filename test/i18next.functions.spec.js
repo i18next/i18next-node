@@ -1,11 +1,11 @@
-// i18next, v1.6.1
+// i18next, v1.6.3
 // Copyright (c)2013 Jan Mühlemann (jamuhl).
 // Distributed under MIT license
 // http://i18next.com
 //////////////////////
 // HINT
 //
-// you need to replace '_fetchOne' with 'fetchOne' to use this on server
+// you need to replace 'fetchOne' with 'fetchOne' to use this on server
 //
 
 var i18n = require('../index')
@@ -22,7 +22,6 @@ describe('i18next.functions', function() {
       fallbackLng: 'dev',
       fallbackNS: [],
       fallbackToDefaultNS: false,
-      fallbackOnNull: true,
       load: 'all',
       preload: [],
       supportedLngs: [],
@@ -36,6 +35,7 @@ describe('i18next.functions', function() {
       interpolationPrefix: '__',
       interpolationSuffix: '__',
       postProcess: '',
+      parseMissingKey: '',
       debug: false
     };
 
@@ -101,6 +101,9 @@ describe('i18next.functions', function() {
         i18n.addPostProcessor('myProcessor', function(val, key, opts) {
           return 'ok_from_postprocessor';
         });
+        i18n.addPostProcessor('myProcessor2', function(val, key, opts) {
+          return val + ' ok' ;
+        });
       });
   
       beforeEach(function(done) {
@@ -117,7 +120,11 @@ describe('i18next.functions', function() {
       });
   
       it('it should postprocess on default value', function() {
-        expect(i18n.t('notFound', {defaultValue: 'not processed', postProcess: 'myProcessor'})).to.be('ok_from_postprocessor');
+        expect(i18n.t('notFound1', {defaultValue: 'defaultValue', postProcess: 'myProcessor2'})).to.be('defaultValue ok');
+      });
+  
+      it('it should postprocess on missing value', function() {
+        expect(i18n.t('notFound2', {postProcess: 'myProcessor2'})).to.be('notFound2 ok');
       });
   
       describe('or setting it as default on init', function() {

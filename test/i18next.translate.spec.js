@@ -1,4 +1,4 @@
-// i18next, v1.6.1
+// i18next, v1.6.3
 // Copyright (c)2013 Jan Mühlemann (jamuhl).
 // Distributed under MIT license
 // http://i18next.com
@@ -13,10 +13,9 @@ describe('i18next.translate', function() {
   beforeEach(function() {
     opts = {
       lng: 'en-US',
-      fallbackLng: 'dev',
+      fallbackLng: 'dev', 
       fallbackNS: [],
       fallbackToDefaultNS: false,
-      fallbackOnNull: true,
       load: 'all',
       preload: [],
       supportedLngs: [],
@@ -30,8 +29,73 @@ describe('i18next.translate', function() {
       interpolationPrefix: '__',
       interpolationSuffix: '__',
       postProcess: '',
+      parseMissingKey: '',
       debug: false
     };
+  });
+
+  describe('resource is missing', function() {
+    var resStore = {
+      dev: { translation: { } },
+      en: { translation: { } },            
+      'en-US': { translation: { } }
+    };
+    
+    beforeEach(function(done) {
+      i18n.init(i18n.functions.extend(opts, { resStore: resStore }),
+        function(t) { done(); });
+    });
+  
+    it('it should return key', function() {
+      expect(i18n.t('missing')).to.be('missing');
+    });
+  
+    it('it should return default value if set', function() {
+      expect(i18n.t('missing', { defaultValue: 'defaultOfMissing'})).to.be('defaultOfMissing');
+    });
+  
+    describe('with namespaces', function() {
+  
+      it('it should return key', function() {
+        expect(i18n.t('translate:missing')).to.be('translate:missing');
+      });
+  
+      it('it should return default value if set', function() {
+        expect(i18n.t('translate:missing', { defaultValue: 'defaultOfMissing'})).to.be('defaultOfMissing');
+      });
+  
+      describe('and function parseMissingKey set', function() {
+        beforeEach(function(done) {
+          i18n.init(i18n.functions.extend(opts, { 
+            parseMissingKey: function(key) {
+              var ret = key;
+  
+              if (ret.indexOf(':')) {
+                 ret = ret.substring(ret.lastIndexOf(':')+1, ret.length);
+              }
+  
+              if (ret.indexOf('.')) {
+                ret = ret.substring(ret.lastIndexOf('.')+1, ret.length);
+              }
+  
+              return ret;
+            } 
+          }), function(t) { done(); });
+        });
+  
+        it('it should parse key', function() {
+          expect(i18n.t('translate:missing')).to.be('missing');
+          expect(i18n.t('translate:somenesting.missing')).to.be('missing');
+        });
+  
+        it('it should return default value if set', function() {
+          expect(i18n.t('translate:missing', { defaultValue: 'defaultOfMissing'})).to.be('defaultOfMissing');
+        });
+  
+      });
+  
+    });
+  
   });
 
   describe('resource string is null', function() {
@@ -642,6 +706,33 @@ describe('i18next.translate', function() {
         expect(i18n.t('key', {count: 99})).to.be('0,5,6');
         expect(i18n.t('key', {count: 199})).to.be('0,5,6');
         expect(i18n.t('key', {count: 100})).to.be('0,5,6');
+      });
+    });
+  
+    describe('extended usage - ask for a key in a language with a different plural form', function() {
+      var resStore = {
+          en: { translation: {
+              key:'singular_en',
+              key_plural:'plural_en'
+            } 
+          },
+          zh: { translation: { 
+              key: 'singular_zh'
+            }
+          }
+      };
+      
+      beforeEach(function(done) {
+        i18n.init(i18n.functions.extend(opts, { lng: 'zh', resStore: resStore }),
+          function(t) { done(); });
+      });
+  
+      it('it should provide translation for passed in language with 1 item', function() {
+        expect(i18n.t('key', { lng: 'en', count:1 })).to.be('singular_en');
+      });
+  
+      it('it should provide translation for passed in language with 2 items', function() {
+        expect(i18n.t('key', { lng: 'en', count:2 })).to.be('plural_en');
       });
     });
   
