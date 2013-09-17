@@ -1,4 +1,4 @@
-// i18next, v1.6.3
+// i18next, v1.6.4_pre
 // Copyright (c)2013 Jan Mühlemann (jamuhl).
 // Distributed under MIT license
 // http://i18next.com
@@ -6,6 +6,7 @@
 // HINT
 //
 // you need to replace 'fetchOne' with 'fetchOne' to use this on server
+// fix line 351 'sendMissing' -> 'saveMissing'
 //
 
 
@@ -350,7 +351,7 @@ describe('i18next.init', function() {
               i18n.init(i18n.functions.extend(opts, { 
                 fallbackNS: ['ns.fallback1', 'ns.fallback2'], 
                 resStore: resStore,
-                saveMissing: true,
+                saveMissing: true, /* must be changed to saveMissing */
                 ns: { namespaces: ['ns.common', 'ns.special', 'ns.fallback'], defaultNs: 'ns.special'} } ),
                 function(t) { 
                   t('ns.common:notExisting');

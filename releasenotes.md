@@ -1,3 +1,8 @@
+### v1.7.0
+- setLng via req.i18n.setLng (same as setting req.lng)
+- support cookie domain (options cookieDomain = '')
+- updated client
+
 ### v1.6.8
 - fixes issue with saveMissing key/value - it should not throw error on unknown language namespace combination
 - fixes issue with fallbackLng = false in combination with sendMissingTo = fallback
