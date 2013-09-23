@@ -1,3 +1,6 @@
+### v1.7.1
+- update client for some typos
+
 ### v1.7.0
 - setLng via req.i18n.setLng (same as setting req.lng)
 - support cookie domain (options cookieDomain = '')
