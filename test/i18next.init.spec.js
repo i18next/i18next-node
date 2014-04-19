@@ -1,5 +1,5 @@
-// i18next, v1.7.1
-// Copyright (c)2013 Jan Mühlemann (jamuhl).
+// i18next, v1.7.3
+// Copyright (c)2014 Jan Mühlemann (jamuhl).
 // Distributed under MIT license
 // http://i18next.com
 //////////////////////
@@ -24,6 +24,8 @@ describe('i18next.init', function() {
       fallbackLng: 'dev',
       fallbackNS: [],
       fallbackToDefaultNS: false,
+      fallbackOnNull: true,
+      fallbackOnEmpty: false,
       load: 'all',
       preload: [],
       supportedLngs: [],
@@ -39,7 +41,8 @@ describe('i18next.init', function() {
       interpolationSuffix: '__',
       postProcess: '',
       parseMissingKey: '',
-      debug: false
+      debug: false,
+      objectTreeKeyHandler: null
     };
 
     i18n.init(opts, function(t) {
@@ -51,6 +54,53 @@ describe('i18next.init', function() {
   // init/init.load.spec.js
 
   describe('advanced initialisation options', function() {
+
+    describe('setting fallbackLng', function() {
+    
+      var resStore = {
+        dev1: { translation: { 'simple_dev1': 'ok_from_dev1' } },
+        en: { translation: { 'simple_en': 'ok_from_en' } },
+        'en-US': { translation: { 'simple_en-US': 'ok_from_en-US' } }
+      };
+      
+      beforeEach(function(done) {
+        i18n.init(i18n.functions.extend(opts, { resStore: resStore, fallbackLng: 'dev1' }),
+          function(t) { done(); });
+      });
+    
+      it('it should provide passed in resources for translation', function() {
+        expect(i18n.t('simple_en-US')).to.be('ok_from_en-US');
+        expect(i18n.t('simple_en')).to.be('ok_from_en');
+        expect(i18n.t('simple_dev1')).to.be('ok_from_dev1');
+      });
+    
+    });
+    
+    describe('multiple fallbackLng', function() {
+    
+      var resStore = {
+        dev1: { translation: { 'simple_dev1': 'ok_from_dev1', 'simple_dev': 'ok_from_dev1' } },
+        dev2: { translation: { 'simple_dev2': 'ok_from_dev2', 'simple_dev': 'ok_from_dev2' } },
+        en: { translation: { 'simple_en': 'ok_from_en' } },
+        'en-US': { translation: { 'simple_en-US': 'ok_from_en-US' } }
+      };
+      
+      beforeEach(function(done) {
+        i18n.init(i18n.functions.extend(opts, { resStore: resStore, fallbackLng: ['dev1', 'dev2'] }),
+          function(t) { done(); });
+      });
+    
+      it('it should provide passed in resources for translation', function() {
+        expect(i18n.t('simple_en-US')).to.be('ok_from_en-US');
+        expect(i18n.t('simple_en')).to.be('ok_from_en');
+        // in one
+        expect(i18n.t('simple_dev1')).to.be('ok_from_dev1');
+        expect(i18n.t('simple_dev2')).to.be('ok_from_dev2');
+        // in both
+        expect(i18n.t('simple_dev')).to.be('ok_from_dev1');
+      });
+    
+    });
 
     describe('adding resources after init', function() {
     
@@ -88,6 +138,28 @@ describe('i18next.init', function() {
           expect(i18n.options.ns.namespaces).to.contain('newNamespace');
         });
     
+      });
+    
+    });
+
+    describe('removing resources after init', function() {
+    
+      var resStore = {
+        dev: { translation: { 'test': 'ok_from_dev' } },
+        en: { translation: { 'test': 'ok_from_en' } },            
+        'en-US': { translation: { 'test': 'ok_from_en-US' } }
+      };
+      
+      beforeEach(function(done) {
+        i18n.init(i18n.functions.extend(opts, { resStore: resStore }),
+          function(t) { 
+            i18n.removeResourceBundle('en-US', 'translation');
+            done(); 
+          });
+      });
+    
+      it('it should remove resources', function() {
+        expect(i18n.t('test')).to.be('ok_from_en');
       });
     
     });

@@ -1,5 +1,5 @@
-// i18next, v1.7.1
-// Copyright (c)2013 Jan Mühlemann (jamuhl).
+// i18next, v1.7.3
+// Copyright (c)2014 Jan Mühlemann (jamuhl).
 // Distributed under MIT license
 // http://i18next.com
 //////////////////////
@@ -22,6 +22,8 @@ describe('i18next.functions', function() {
       fallbackLng: 'dev',
       fallbackNS: [],
       fallbackToDefaultNS: false,
+      fallbackOnNull: true,
+      fallbackOnEmpty: false,
       load: 'all',
       preload: [],
       supportedLngs: [],
@@ -36,13 +38,37 @@ describe('i18next.functions', function() {
       interpolationSuffix: '__',
       postProcess: '',
       parseMissingKey: '',
-      debug: false
+      debug: false,
+      objectTreeKeyHandler: null
     };
 
     i18n.init(opts, function(t) {
       i18n.sync.resStore = {};
       done();
     });
+  });
+
+  describe('CI mode', function() {
+  
+    beforeEach(function(done) {
+      i18n.init(i18n.functions.extend(opts, {
+        resStore: {
+          'en-US': { translation: { 'simpleTest': 'ok_from_en-US' } },
+          'de-DE': { translation: { 'simpleTest': 'ok_from_de-DE' } }
+        }
+      }), function(t) { done(); } );
+    });
+  
+    it('it should provide resources for set language', function(done) {
+      expect(i18n.t('simpleTest')).to.be('ok_from_en-US');
+  
+      i18n.setLng('CIMode', function(t) {
+          expect(t('simpleTest')).to.be('simpleTest');
+          done();
+      });
+  
+    });
+  
   });
 
   describe('setting language', function() {
@@ -166,5 +192,26 @@ describe('i18next.functions', function() {
   });
 
   // functions/functions.postmissing.spec.js
+
+  describe('using objectTreeKeyHandler', function() {
+  
+    beforeEach(function(done) {
+      i18n.init(i18n.functions.extend(opts, {
+        objectTreeKeyHandler: function(key, value, lng, ns, opts) {
+          return i18n.t(key + '.a');
+        },
+        resStore: {
+          'en-US': { translation: { 'simpleTest': { a: 'a value', b: 'b value' } } }
+        },
+        returnObjectTrees: false
+      }), function(t) { done(); } );
+    });
+  
+    it('it should apply objectTreeKeyHandler', function() {
+      expect(i18n.t('simpleTest')).to.be('a value');
+    });
+  
+  });
+
 
 });

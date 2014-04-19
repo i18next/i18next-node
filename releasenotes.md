@@ -1,3 +1,7 @@
+### v1.7.3
+- updated client to 1.7.3
+- fixes issue with using WT with filesync [issue 116](https://github.com/jamuhl/i18next-node/issues/116)
+
 ### v1.7.1
 - update client for some typos
 
