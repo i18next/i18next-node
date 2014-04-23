@@ -65,7 +65,7 @@ for more information on clientside usage have a look at [i18next](http://jamuhl.
 
 # License
 
-Copyright (c) 2011 Jan Mühlemann
+Copyright (c) 2014 Jan Mühlemann
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
