@@ -6,7 +6,7 @@ var i18n = require('../index')
 
 describe('i18next.detectLanguage.spec', function() {
 
-  var opts, app;
+  var opts, app, userlandLanguage;
 
   before(function(done) {
     opts = {
@@ -20,7 +20,10 @@ describe('i18next.detectLanguage.spec', function() {
       saveMissing: false,
       resStore: false,
       detectLngFromPath: 0,
-      debug: false
+      debug: false,
+      detectLanguageFn: function (req, res) {
+        return userlandLanguage; // most tests leave this blank meaning this step is ignored
+      }
     };
 
     app = express();
@@ -53,9 +56,23 @@ describe('i18next.detectLanguage.spec', function() {
   
   });
 
+  afterEach(function () {
+    userlandLanguage = null;
+  });
+
   describe('detect language functionality', function() {
 
     describe('without supported languages set', function() {
+
+      describe('by userland fn', function() {
+        userlandLanguage = 'de-CH';
+        it('it should return userland language', function(done) {
+          request(app)
+            .get('/getLng')
+            .expect('de-CH')
+            .expect(200, done);
+        });
+      });
 
       describe('by route', function() {
         it('it should return set language', function(done) {
