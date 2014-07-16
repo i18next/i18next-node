@@ -24,7 +24,7 @@
 
 ### v1.6.5
 - updated client
-- set json intend via init options jsonIntend = integer
+- set json intend via init options jsonIndent = integer
 
 ### v1.6.4
 - fixes concurrancy issue for express version < 3
