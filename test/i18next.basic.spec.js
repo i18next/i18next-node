@@ -21,11 +21,26 @@ describe('i18next.basic.spec', function() {
       returnObjectTrees: false,
       debug: false
     };
-    
+
     i18n.backend(filesync);
   });
 
   describe('basic functionality', function() {
+
+    describe('load JSON5', function() {
+
+      beforeEach(function(done) {
+        i18n.init(i18n.functions.extend(opts, {
+          resGetPath: 'test/locales/__lng__/__ns__.json5'
+        }), function(t) { done(); } );
+      });
+
+      it('it shouldn\'t throw an error and have the right keys', function() {
+        expect(i18n.t('simple_en-US')).to.be('ok_from_en-US');
+        expect(i18n.t('test.simple_en-US')).to.be('ok_from_en-US');
+      });
+
+    });
 
     describe('save missing key', function() {
 
