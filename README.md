@@ -1,9 +1,9 @@
 # Introduction
 
-[![Build Status](https://secure.travis-ci.org/jamuhl/i18next-node.png)](http://travis-ci.org/jamuhl/i18next-node)
+[![Build Status](https://secure.travis-ci.org/i18next/i18next-node.png)](http://travis-ci.org/jamuhl/i18next-node)
 
 Project goal is to provide the same easy way to translate a website on serverside like in 
-[i18next](https://github.com/jamuhl/i18next) on the clientside:
+[i18next](https://github.com/i18next/i18next) on the clientside:
 
 - Translation inside your server code or template
 - loading resourcefiles
@@ -57,11 +57,11 @@ now you can add the script to you page and use i18next on the client like on the
         $('#appname').text($.t('app.name'));
     });
 
-for more information on clientside usage have a look at [i18next](http://jamuhl.github.com/i18next/)
+for more information on clientside usage have a look at [i18next](http://i18next.github.com/i18next/)
 
 # sample
 
-- [i18next-node_Sample](https://github.com/jamuhl/i18next-node/tree/master/sample)
+- [i18next-node_Sample](https://github.com/i18next/i18next-node/tree/master/sample)
 
 # License
 
