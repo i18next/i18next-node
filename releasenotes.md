@@ -1,3 +1,12 @@
+### v1.7.6
+- updated client to 1.7.6
+- multiple handlers for addRoute
+- options.detectLanguageFn(req, res) --> allows on detection Function (eg. from storage)
+- allow cache=false maxAge=0
+- JSON5 support
+- strip BOM
+- try JSON.parse
+
 ### v1.7.3
 - updated client to 1.7.3
 - fixes issue with using WT with filesync [issue 116](https://github.com/jamuhl/i18next-node/issues/116)
