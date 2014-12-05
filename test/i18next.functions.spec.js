@@ -1,11 +1,11 @@
-// i18next, v1.7.3
+// i18next, v1.7.5
 // Copyright (c)2014 Jan Mühlemann (jamuhl).
 // Distributed under MIT license
 // http://i18next.com
 //////////////////////
 // HINT
 //
-// you need to replace 'fetchOne' with 'fetchOne' to use this on server
+// you need to replace '_fetchOne' with 'fetchOne' to use this on server
 //
 
 var i18n = require('../index')
@@ -39,7 +39,8 @@ describe('i18next.functions', function() {
       postProcess: '',
       parseMissingKey: '',
       debug: false,
-      objectTreeKeyHandler: null
+      objectTreeKeyHandler: null,
+      lngWhitelist: null
     };
 
     i18n.init(opts, function(t) {

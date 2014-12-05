@@ -1,4 +1,4 @@
-// i18next, v1.7.3
+// i18next, v1.7.5
 // Copyright (c)2014 Jan Mühlemann (jamuhl).
 // Distributed under MIT license
 // http://i18next.com
@@ -33,7 +33,8 @@ describe('i18next.translate', function() {
       postProcess: '',
       parseMissingKey: '',
       debug: false,
-      objectTreeKeyHandler: null
+      objectTreeKeyHandler: null,
+      lngWhitelist: null
     };
   });
 
@@ -447,10 +448,34 @@ describe('i18next.translate', function() {
       expect(i18n.t('nesting_default', {defaultValue: '0 $t(nesting1)'})).to.be('0 1 2 3');
     });
   
+    describe('resource nesting syntax error', function() {
+      var resStore = {
+        dev: { translation: { nesting1: '1 $t(nesting2' } },
+        en: { translation: { nesting2: '2 $t(nesting3)' } },
+        'en-US': { translation: {  nesting3: '3' } }
+      };
+  
+      beforeEach(function(done) {
+        i18n.init(i18n.functions.extend(opts, { resStore: resStore }),
+          function(t) { done(); });
+      });
+  
+      it('it should translate nested value', function() {
+        expect(i18n.t('nesting1')).to.be('');
+      });
+  
+    });
+  
     describe('with setting new options', function() {
       var resStore = {
-        dev: { translation: { nesting1_plural: '$t(nesting2, {"count": __girls__}) and __count__ boys' } },
-        en: { translation: { nesting2_plural: '__count__ girls' } }
+        dev: { translation: { 
+          nesting1: '$t(nesting2, {"count": __girls__}) and __count__ boy',
+          nesting1_plural: '$t(nesting2, {"count": __girls__}) and __count__ boys' 
+        } },
+        en: { translation: {
+          nesting2: '__count__ girl',
+          nesting2_plural: '__count__ girls' 
+        } }
       };
       
       beforeEach(function(done) {
@@ -460,6 +485,7 @@ describe('i18next.translate', function() {
   
       it('it should translate nested value and set new options', function() {
         expect(i18n.t('nesting1', {count: 2, girls: 3})).to.be('3 girls and 2 boys');
+        expect(i18n.t('nesting1', {count: 1, girls: 3})).to.be('3 girls and 1 boy');
       });
     });
   
@@ -494,12 +520,23 @@ describe('i18next.translate', function() {
         expect(i18n.t('interpolationTest4', { child: { grandChild: { three: '3'}}})).to.be('added 3');
       });
     
+      it('it should replace passed in key/values in replace member', function() {
+        expect(i18n.t('interpolationTest1', { replace: {toAdd: 'something'} })).to.be('added something');
+        expect(i18n.t('interpolationTest2', { replace: {toAdd: 'something'} })).to.be('added something something twice');
+        expect(i18n.t('interpolationTest3', { replace: { child: { one: '1', two: '2'}} })).to.be('added 1 2');
+        expect(i18n.t('interpolationTest4', { replace: { child: { grandChild: { three: '3'}}} })).to.be('added 3');
+      });
+    
       it("it should not escape HTML", function() {
         expect(i18n.t('interpolationTest1', {toAdd: '<html>'})).to.be('added <html>');
       });
     
       it('it should replace passed in key/values on defaultValue', function() {
         expect(i18n.t('interpolationTest5', {defaultValue: 'added __toAdd__', toAdd: 'something'})).to.be('added something');
+      });
+    
+      it("it should escape dollar signs in replacement values", function() {
+        expect(i18n.t('interpolationTest1', {toAdd: '$&'})).to.be('added $&');
       });
     
     });
@@ -611,6 +648,10 @@ describe('i18next.translate', function() {
         expect(i18n.t('interpolationTest7', {toAdd: '<html>', escapeInterpolation: true})).to.be('added <html> &lt;html&gt;');
       });
     
+      it("it should escape dollar signs in replacement values", function() {
+        expect(i18n.t('interpolationTest1', {toAdd: '$&'})).to.be('added $&amp;');
+      });
+    
     });
     
     describe('default i18next way - with escaping interpolated arguments per default via options', function () {
@@ -644,6 +685,10 @@ describe('i18next.translate', function() {
     
       it("it should support both escaping and not escaping HTML", function() {
         expect(i18n.t('interpolationTest7', {toAdd: '<html>', escapeInterpolation: true})).to.be('added <html> &lt;html&gt;');
+      });
+    
+      it("it should escape dollar signs in replacement values", function() {
+        expect(i18n.t('interpolationTest1', {toAdd: '$&'})).to.be('added $&amp;');
       });
     
     });
@@ -705,7 +750,7 @@ describe('i18next.translate', function() {
       beforeEach(function(done) {
         i18n.init(i18n.functions.extend(opts, { 
             resStore: resStore,
-            ns: { namespaces: ['ns.1', 'ns.2'], defaultNs: 'ns.1'} 
+            ns: { namespaces: ['ns.1', 'ns.2'], defaultNs: 'ns.1'}
           }),
           function(t) { done(); });
       });
@@ -730,7 +775,46 @@ describe('i18next.translate', function() {
         expect(i18n.t('ns.2:pluralTestWithCount', {count: 1})).to.be('1 item from ns.2');
         expect(i18n.t('ns.2:pluralTestWithCount', {count: 7})).to.be('7 items from ns.2');
       });
+  
     });
+  
+    describe('basic usage - singular and plural form on fallbacks', function() {
+      var resStore = {
+        'fr': { 
+          'translation': {}
+        },
+        'en': { 
+          'translation': {
+              pluralTest: 'singular',
+              pluralTest_plural: 'plural',
+              pluralTestWithCount: '__count__ item',
+              pluralTestWithCount_plural: '__count__ items'
+          } 
+        }
+      };
+  
+      beforeEach(function(done) {
+        i18n.init(i18n.functions.extend(opts, { 
+          resStore: resStore,
+          lng: 'fr',
+          fallbackLng: 'en'
+        }),
+        function(t) { done(); });
+      });
+  
+      it('it should provide correct plural or singular form', function() {
+        expect(i18n.t('pluralTest', {count: 0})).to.be('plural');
+        expect(i18n.t('pluralTest', {count: 1})).to.be('singular');
+        expect(i18n.t('pluralTest', {count: 2})).to.be('plural');
+        expect(i18n.t('pluralTest', {count: 7})).to.be('plural');
+  
+        expect(i18n.t('pluralTestWithCount', {count: 0})).to.be('0 items');
+        expect(i18n.t('pluralTestWithCount', {count: 1})).to.be('1 item');
+        expect(i18n.t('pluralTestWithCount', {count: 7})).to.be('7 items');
+      });
+  
+    });
+  
   
     describe('basic usage 2 - singular and plural form in french', function() {
       var resStore = {

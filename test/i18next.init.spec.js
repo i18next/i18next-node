@@ -1,11 +1,11 @@
-// i18next, v1.7.3
+// i18next, v1.7.5
 // Copyright (c)2014 Jan Mühlemann (jamuhl).
 // Distributed under MIT license
 // http://i18next.com
 //////////////////////
 // HINT
 //
-// you need to replace 'fetchOne' with 'fetchOne' to use this on server
+// you need to replace '_fetchOne' with 'fetchOne' to use this on server
 // fix line 351 'sendMissing' -> 'saveMissing'
 //
 
@@ -42,7 +42,8 @@ describe('i18next.init', function() {
       postProcess: '',
       parseMissingKey: '',
       debug: false,
-      objectTreeKeyHandler: null
+      objectTreeKeyHandler: null,
+      lngWhitelist: null
     };
 
     i18n.init(opts, function(t) {
@@ -109,33 +110,112 @@ describe('i18next.init', function() {
         en: { translation: { 'simple_en': 'ok_from_en' } }//,            
         //'en-US': { translation: { 'simple_en-US': 'ok_from_en-US' } }
       };
-      
-      beforeEach(function(done) {
-        i18n.init(i18n.functions.extend(opts, { resStore: resStore }),
-          function(t) { 
-            i18n.addResourceBundle('en-US', 'translation', { 'simple_en-US': 'ok_from_en-US' });
-            done(); 
-          });
-      });
     
-      it('it should provide passed in resources for translation', function() {
-        expect(i18n.t('simple_en-US')).to.be('ok_from_en-US');
-        expect(i18n.t('simple_en')).to.be('ok_from_en');
-        expect(i18n.t('simple_dev')).to.be('ok_from_dev');
-      });
-    
-      describe('with a additional namespace', function() {
+      describe('resources', function() {
     
         beforeEach(function(done) {
           i18n.init(i18n.functions.extend(opts, { resStore: resStore }),
             function(t) { 
-              i18n.addResourceBundle('en-US', 'newNamespace', { 'simple_en-US': 'ok_from_en-US' });
+              i18n.addResource('en-US', 'translation', 'some.deep.thing', 'ok_from_en-US');
               done(); 
             });
         });
     
-        it('it should add the new namespace to the namespace array', function() {
-          expect(i18n.options.ns.namespaces).to.contain('newNamespace');
+        it('it should provide passed in resources for translation', function() {
+          expect(i18n.t('some.deep.thing')).to.be('ok_from_en-US');
+        });
+    
+        describe('multiple resources', function() {
+    
+          beforeEach(function(done) {
+            i18n.init(i18n.functions.extend(opts, { resStore: resStore }),
+              function(t) { 
+                i18n.addResources('en-US', 'translation', { 
+                  'some.other.deep.thing': 'ok_from_en-US_1',
+                  'some.other.deep.deeper.thing': 'ok_from_en-US_2' 
+                });
+                done(); 
+              });
+          });
+    
+          it('it should add the new namespace to the namespace array', function() {
+            expect(i18n.t('some.other.deep.thing')).to.be('ok_from_en-US_1');
+            expect(i18n.t('some.other.deep.deeper.thing')).to.be('ok_from_en-US_2');
+          });
+    
+        });
+    
+      });
+    
+      describe('bundles', function() {
+      
+        beforeEach(function(done) {
+          i18n.init(i18n.functions.extend(opts, { resStore: resStore }),
+            function(t) { 
+              i18n.addResourceBundle('en-US', 'translation', { 'simple_en-US': 'ok_from_en-US' });
+              done(); 
+            });
+        });
+    
+        it('it should provide passed in resources for translation', function() {
+          expect(i18n.t('simple_en-US')).to.be('ok_from_en-US');
+          expect(i18n.t('simple_en')).to.be('ok_from_en');
+          expect(i18n.t('simple_dev')).to.be('ok_from_dev');
+        });
+    
+        describe('with a additional namespace', function() {
+    
+          beforeEach(function(done) {
+            i18n.init(i18n.functions.extend(opts, { resStore: resStore }),
+              function(t) { 
+                i18n.addResourceBundle('en-US', 'newNamespace', { 'simple_en-US': 'ok_from_en-US' });
+                done(); 
+              });
+          });
+    
+          it('it should add the new namespace to the namespace array', function() {
+            expect(i18n.options.ns.namespaces).to.contain('newNamespace');
+          });
+    
+        });
+    
+        describe('with using deep switch', function() {
+    
+          beforeEach(function(done) {
+            i18n.init(i18n.functions.extend(opts, { resStore: resStore }),
+              function(t) { 
+                i18n.addResourceBundle('en-US', 'translation', { 'deep': { 'simple_en-US_1': 'ok_from_en-US_1' }});
+                i18n.addResourceBundle('en-US', 'translation', { 'deep': { 'simple_en-US_2': 'ok_from_en-US_2' }}, true);
+                done(); 
+              });
+          });
+    
+          it('it should add the new namespace to the namespace array', function() {
+            expect(i18n.t('deep.simple_en-US_1')).to.be('ok_from_en-US_1');
+            expect(i18n.t('deep.simple_en-US_2')).to.be('ok_from_en-US_2');
+          });
+    
+        });
+    
+        describe('check if exists', function() {
+    
+          beforeEach(function(done) {
+            i18n.init(i18n.functions.extend(opts, { resStore: resStore }),
+              function(t) { 
+                i18n.addResourceBundle('en-US', 'translation', { 'deep': { 'simple_en-US_1': 'ok_from_en-US_1' }});
+                i18n.addResourceBundle('en-US', 'translation', { 'deep': { 'simple_en-US_2': 'ok_from_en-US_2' }}, true);
+                done(); 
+              });
+          });
+    
+          it('it should return true for existing bundle', function() {
+            expect(i18n.hasResourceBundle('en-US', 'translation')).to.be.ok();
+          });
+    
+          it('it should return false for non-existing bundle', function() {
+            expect(i18n.hasResourceBundle('de-CH', 'translation')).to.not.be.ok();
+          });
+    
         });
     
       });
@@ -419,7 +499,7 @@ describe('i18next.init', function() {
             var spy; 
     
             beforeEach(function(done) {
-              spy = sinon.spy(i18n.sync, 'postMissing');
+              spy = sinon.spy(i18n.options, 'missingKeyHandler');
               i18n.init(i18n.functions.extend(opts, { 
                 fallbackNS: ['ns.fallback1', 'ns.fallback2'], 
                 resStore: resStore,
@@ -620,79 +700,7 @@ describe('i18next.init', function() {
         });
     
       });
-
-    });
-
-    // init/init.functions.spec.js
-
-    describe('with custom functions', function () {
-
-      var origDetectLanguage = i18n.functions.detectLanguage;
-      var origLog = i18n.functions.log;
-
-      afterEach(function() {
-        i18n.init(i18n.functions.extend(opts, {
-          functions: {
-            detectLanguage: origDetectLanguage,
-            log: origLog
-          }
-        }));
-      });
     
-      describe('to override detectLanguage.', function () {
-
-        var resStore = {
-          dev: { translation: { 'simple': 'ok_from_dev' } },
-          en: { translation: { 'simple': 'ok_from_en' } },
-          'en-us': { translation: { 'simple': 'ok_from_en-us' } }
-        };
-
-        beforeEach(function() {
-          i18n.init(i18n.functions.extend(opts, {
-            functions: {
-              detectLanguage: function(req, res, options) {
-                return 'dev';
-              }
-            },
-            resStore: resStore
-          }, function(t) { done(); }) );
-        });
-
-        it('it should override detectLanguage', function () {
-          expect(i18n.detectLanguage()).to.be('dev');
-        });
-
-      });
-
-      describe('to override log', function () {
-
-        var resStore = {
-          dev: { translation: { 'simple': 'ok_from_dev' } },
-          en: { translation: { 'simple': 'ok_from_en' } },
-          'en-us': { translation: { 'simple': 'ok_from_en-us' } }
-        };
-
-        var logData = [];
-
-        beforeEach(function() {
-          i18n.init(i18n.functions.extend(opts, {
-            lng: 'en-us',
-            functions: {
-              debug: true,
-              log: function(message) {
-                logData.push(message);
-              }
-            },
-            resStore: resStore
-          }, function(t) { done(); }) );
-        });
-
-        it('it should override log', function () {
-          expect(logData[0]).to.be('currentLng set to: en-US');
-        });
-
-      });
-
     });
 
   });
