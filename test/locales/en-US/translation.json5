@@ -1,0 +1,12 @@
+{
+	/*
+    Block comment.
+   */
+  "simple_en-US": "ok_from\
+_en-US", // Multi-line.
+
+  // Unquoted key.
+	test: {
+		"simple_en-US": 'ok_from_en-US' // Single-quote
+	}, // <-- Trailing comma.
+}

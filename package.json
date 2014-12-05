@@ -16,7 +16,8 @@
     "node": ">= 0.4.0"
   },
   "dependencies": {
-    "cookies": ">= 0.2.2"
+    "cookies": ">= 0.2.2",
+    "json5": "^0.2.0"
   },
   "devDependencies": {
       "mocha": ">= 0.10.2"
