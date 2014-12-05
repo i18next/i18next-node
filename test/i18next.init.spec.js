@@ -620,7 +620,79 @@ describe('i18next.init', function() {
         });
     
       });
+
+    });
+
+    // init/init.functions.spec.js
+
+    describe('with custom functions', function () {
+
+      var origDetectLanguage = i18n.functions.detectLanguage;
+      var origLog = i18n.functions.log;
+
+      afterEach(function() {
+        i18n.init(i18n.functions.extend(opts, {
+          functions: {
+            detectLanguage: origDetectLanguage,
+            log: origLog
+          }
+        }));
+      });
     
+      describe('to override detectLanguage.', function () {
+
+        var resStore = {
+          dev: { translation: { 'simple': 'ok_from_dev' } },
+          en: { translation: { 'simple': 'ok_from_en' } },
+          'en-us': { translation: { 'simple': 'ok_from_en-us' } }
+        };
+
+        beforeEach(function() {
+          i18n.init(i18n.functions.extend(opts, {
+            functions: {
+              detectLanguage: function(req, res, options) {
+                return 'dev';
+              }
+            },
+            resStore: resStore
+          }, function(t) { done(); }) );
+        });
+
+        it('it should override detectLanguage', function () {
+          expect(i18n.detectLanguage()).to.be('dev');
+        });
+
+      });
+
+      describe('to override log', function () {
+
+        var resStore = {
+          dev: { translation: { 'simple': 'ok_from_dev' } },
+          en: { translation: { 'simple': 'ok_from_en' } },
+          'en-us': { translation: { 'simple': 'ok_from_en-us' } }
+        };
+
+        var logData = [];
+
+        beforeEach(function() {
+          i18n.init(i18n.functions.extend(opts, {
+            lng: 'en-us',
+            functions: {
+              debug: true,
+              log: function(message) {
+                logData.push(message);
+              }
+            },
+            resStore: resStore
+          }, function(t) { done(); }) );
+        });
+
+        it('it should override log', function () {
+          expect(logData[0]).to.be('currentLng set to: en-US');
+        });
+
+      });
+
     });
 
   });
