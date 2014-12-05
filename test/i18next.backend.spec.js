@@ -141,6 +141,24 @@ describe('i18next.backend.spec', function() {
         
       });
 
+      it('it should strip BOM without error', function(done) {
+
+        sync.fetchOne('en-US', 'ns.test-bom', function(err, data) {
+          expect(err).to.not.be.ok();
+          done();
+        });
+
+      });
+
+      it('it should return JSON.parse error', function(done) {
+
+        sync.fetchOne('en-US', 'ns.test-jsonfail', function(err, data) {
+          expect(err).to.be.ok();
+          done();
+        });
+
+      });
+
     });
 
     describe('post missing', function() {
