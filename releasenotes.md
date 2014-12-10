@@ -1,3 +1,6 @@
+### v1.7.8
+- update client to 1.7.8
+
 ### v1.7.6
 - updated client to 1.7.6
 - multiple handlers for addRoute
