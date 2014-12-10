@@ -1,5 +1,5 @@
 ### v1.7.8
-- update client to 1.7.8
+- update client to 1.7.7
 
 ### v1.7.6
 - updated client to 1.7.6
