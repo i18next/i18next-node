@@ -64,13 +64,23 @@ i18n.init({
   resSetPath: 'locales/__lng__/new.__ns__.json',
   saveMissing: true,
   debug: true,
-  sendMissingTo: 'fallback'
+  sendMissingTo: 'fallback',
+  detectLngFromPath: 0
+}, function(t) {
+
+  console.log('i18n is initialized.');
+
+  i18n.addRoute('/:lng', ['en', 'de'], app, 'get', function(req, res) {
+    console.log('SEO friendly route ...');
+    res.render('index');
+  });
+
 });
 
 // Configuration
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
-    extended: true
+  extended: true
 }));
 app.use(i18n.handle); // have i18n befor app.router
 
