@@ -1,5 +1,5 @@
-!!! 5
-html(lang="en")
+doctype html
+html(lang=i18n.lng())
     head
         title i18next sample
         script(src="http://code.jquery.com/jquery-1.7.min.js", type="text/javascript")
@@ -57,8 +57,7 @@ html(lang="en")
         h5 post missing
         span#missing
 
-        script
-
+        script.
             var qsParm = new Array();
             function qs() {
                 var query = window.location.search.substring(1);

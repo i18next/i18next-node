@@ -1,6 +1,7 @@
-var express = require('express')
-  , app = express()
-  , i18n = require('../index');
+var express = require('express'),
+  app = express(),
+  i18n = require('../index'),
+  bodyParser = require('body-parser');
 
 // use mongoDb
 // var i18nMongoSync = require('../backends/mongoDb/index');
@@ -56,46 +57,51 @@ var express = require('express')
 
 // use filesys
 i18n.init({
-    ns: { namespaces: ['ns.common', 'ns.special'], defaultNs: 'ns.special'},
-    resSetPath: 'locales/__lng__/new.__ns__.json',
-    saveMissing: true,
-    debug: true,
-    sendMissingTo: 'fallback'
+  ns: {
+    namespaces: ['ns.common', 'ns.special'],
+    defaultNs: 'ns.special'
+  },
+  resSetPath: 'locales/__lng__/new.__ns__.json',
+  saveMissing: true,
+  debug: true,
+  sendMissingTo: 'fallback'
 });
 
 // Configuration
-app.configure(function() {
-    app.use(express.bodyParser());
-    app.use(i18n.handle); // have i18n befor app.router
-    
-    app.use(app.router);
-    app.set('view engine', 'jade');
-    app.set('views', __dirname);
-});
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+app.use(i18n.handle); // have i18n befor app.router
+
+app.set('view engine', 'jade');
+app.set('views', __dirname);
 
 i18n.registerAppHelper(app)
-    .serveClientScript(app)
-    .serveDynamicResources(app)
-    .serveMissingKeyRoute(app);
+  .serveClientScript(app)
+  .serveDynamicResources(app)
+  .serveMissingKeyRoute(app);
 
 i18n.serveWebTranslate(app, {
-    i18nextWTOptions: {
-      languages: ['de-DE', 'en-US',  'dev'],
-      namespaces: ['ns.common', 'ns.special'],
-      resGetPath: "locales/resources.json?lng=__lng__&ns=__ns__",
-      resChangePath: 'locales/change/__lng__/__ns__',
-      resRemovePath: 'locales/remove/__lng__/__ns__',
-      fallbackLng: "dev",
-      dynamicLoad: true
-    }
+  i18nextWTOptions: {
+    languages: ['de-DE', 'en-US', 'dev'],
+    namespaces: ['ns.common', 'ns.special'],
+    resGetPath: "locales/resources.json?lng=__lng__&ns=__ns__",
+    resChangePath: 'locales/change/__lng__/__ns__',
+    resRemovePath: 'locales/remove/__lng__/__ns__',
+    fallbackLng: "dev",
+    dynamicLoad: true
+  }
 });
 
 app.get('/', function(req, res) {
-	res.render('index', { layout: false });
+  res.render('index', {
+    layout: false
+  });
 });
 
 app.get('/str', function(req, res) {
-    res.send('locale: ' + req.locale + '<br /> key nav.home -> ' + req.i18n.t('nav.home'));
+  res.send('locale: ' + req.locale + '<br /> key nav.home -> ' + req.i18n.t('nav.home'));
 });
 
 app.listen(3000);

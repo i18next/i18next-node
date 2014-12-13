@@ -1,18 +1,27 @@
 {
-  "author": "jamuhl"
-  , "name": "i18next-sample"
-  , "version": "0.0.1"
-  , "private": false
-  , "main": "server.js"
-  , "engines": {
-        "node": "~v0.4.12"
-    }
-  , "dependencies": { 
-      "express": ">=0.0.1"
-    , "jade": ">=0.0.1"
-    , "cookies": ">= 0.2.2"
-  }
-  , "devDependencies": { }
-  , "scripts": {
+  "description": "Node.js i18next sample project.",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jamuhl/i18next-node.git"
+  },
+  "author": "jamuhl",
+  "name": "i18next-sample",
+  "version": "0.0.1",
+  "private": false,
+  "main": "server.js",
+  "engines": {
+    "node": "~v0.4.12"
+  },
+  "dependencies": {
+    "body-parser": "latest",
+    "cookies": "latest",
+    "ee-first": "^1.1.0",
+    "express": "latest",
+    "jade": "latest",
+    "mime-types": "^2.0.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node server.js"
   }
 }
