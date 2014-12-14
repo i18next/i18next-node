@@ -18,7 +18,8 @@
     "ee-first": "^1.1.0",
     "express": "latest",
     "jade": "latest",
-    "mime-types": "^2.0.4"
+    "mime-types": "^2.0.4",
+    "morgan": "^1.5.0"
   },
   "devDependencies": {},
   "scripts": {

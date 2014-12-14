@@ -1,5 +1,7 @@
 var express = require('express'),
   app = express(),
+  logger = require('morgan'),
+  path = require('path'),
   i18n = require('../index'),
   bodyParser = require('body-parser');
 
@@ -55,6 +57,12 @@ var express = require('express'),
 //     });
 // });
 
+// static resources
+var oneDay = 86400000;
+app.use(express.static(path.join(__dirname, 'public'), {
+  maxAge: 7 * oneDay
+}));
+
 // use filesys
 i18n.init({
   ns: {
@@ -66,7 +74,8 @@ i18n.init({
   debug: true,
   sendMissingTo: 'fallback',
   preload: ['en', 'de'],
-  detectLngFromPath: 0
+  detectLngFromPath: 0,
+  ignoreRoutes: ['img/', 'img', 'img/', '/img/', 'css/', 'i18next/']
 }, function(t) {
 
   console.log('i18n is initialized.');
@@ -84,6 +93,7 @@ i18n.init({
 });
 
 // Configuration
+app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true

@@ -3,7 +3,8 @@ html(lang=i18n.lng())
     head
         title i18next sample
         script(src="http://code.jquery.com/jquery-1.7.min.js", type="text/javascript")
-        script(src='i18next/i18next.js', type='text/javascript')          
+        script(src='i18next/i18next.js', type='text/javascript') 
+        link(href="css/main.css", rel="stylesheet")      
 
     body
         h3 get current language in template via express app.helper 
@@ -23,6 +24,10 @@ html(lang=i18n.lng())
         a#de(href='/de') /de
         br
         a#de(href='/de/' + t('route.imprint', { 'lng': 'de' })) /de/impressum
+
+        h3 don't localize static routes, e.g.
+        img(src="img/github.png", width=40, height=40)
+        p this should be very large text (3em)
 
         h3 go to online editor
         a(href='/i18next') webtranslate
