@@ -1,7 +1,9 @@
 {
-    "app": {
-      "area": "Area 51",
-      "district": "District 9 ist spassiger als $t(app.area)"
-    }
-}  
- 
+  "route": {
+    "imprint": "impressum"
+  },
+  "app": {
+    "area": "Area 51",
+    "district": "District 9 ist spassiger als $t(app.area)"
+  }
+}

@@ -14,3 +14,5 @@ new.ns.*
 # Can also ignore all directories and files in a directory.
 node_modules
 node_modules/**/*
+
+*.log

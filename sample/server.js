@@ -65,6 +65,7 @@ i18n.init({
   saveMissing: true,
   debug: true,
   sendMissingTo: 'fallback',
+  preload: ['en', 'de'],
   detectLngFromPath: 0
 }, function(t) {
 
@@ -73,6 +74,11 @@ i18n.init({
   i18n.addRoute('/:lng', ['en', 'de'], app, 'get', function(req, res) {
     console.log('SEO friendly route ...');
     res.render('index');
+  });
+
+  i18n.addRoute('/:lng/route.imprint', ['en', 'de'], app, 'get', function(req, res) {
+    console.log("localized imprint route");
+    res.render('imprint');
   });
 
 });

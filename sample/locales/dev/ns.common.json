@@ -1,13 +1,13 @@
 {
-	"app": {
-		"company": {
-		  "name": "my company"
-		}
-	},
-	"attr": {
-		"placeholder": "translated placeholder",
-		"title": "translated title"	
-	},
-	"add": "add",
-	"sprintf": "Hello %s, %s, %s and %s"
+  "app": {
+    "company": {
+      "name": "my company"
+    }
+  },
+  "attr": {
+    "placeholder": "translated placeholder",
+    "title": "translated title"
+  },
+  "add": "add",
+  "sprintf": "Hello %s, %s, %s and %s"
 }

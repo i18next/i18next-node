@@ -14,6 +14,16 @@ html(lang=i18n.lng())
         | &nbsp;
         a#de(href='/?setLng=de-DE') de-DE
 
+        h3 you can use also localized routes, e.g.:
+        a#en(href='/en') /en
+        br
+        a#en(href='/en/' + t('route.imprint', { 'lng': 'en' })) /en/imprint
+        br
+        br
+        a#de(href='/de') /de
+        br
+        a#de(href='/de/' + t('route.imprint', { 'lng': 'de' })) /de/impressum
+
         h3 go to online editor
         a(href='/i18next') webtranslate
 
