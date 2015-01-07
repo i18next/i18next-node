@@ -1,6 +1,6 @@
 # Introduction
 
-[![Build Status](https://secure.travis-ci.org/i18next/i18next-node.png)](http://travis-ci.org/jamuhl/i18next-node)
+[![Build Status](https://secure.travis-ci.org/i18next/i18next-node.png)](http://travis-ci.org/i18next/i18next-node)
 
 Project goal is to provide the same easy way to translate a website on serverside like in 
 [i18next](https://github.com/i18next/i18next) on the clientside:
