@@ -1,3 +1,6 @@
+### v1.7.9
+- fixes issue with saveMissing [issue 165](https://github.com/i18next/i18next-node/issues/165)
+
 ### v1.7.8
 - update client to 1.7.7
 
