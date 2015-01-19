@@ -14,7 +14,11 @@ module.exports = {
             if (err) {
                 cb(err);
             } else {
-                cb(null, JSON.parse(body));
+                try {
+                    cb(null, JSON.parse(body));
+                } catch(err) {
+                    cb(new Error('error parsing' + url + ': ' + err.message));
+                }
             }
         });
     },
