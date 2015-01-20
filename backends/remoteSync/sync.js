@@ -8,7 +8,7 @@ module.exports = {
     },
 
     fetchOne: function(lng, ns, cb) {
-        var url = applyReplacement(this.options.resGetPath, {lng: lng, ns: ns});
+        var url = this.functions.applyReplacement(this.options.resGetPath, {lng: lng, ns: ns});
 
         request(url, function(err, res, body) {
             if (err) {
@@ -37,7 +37,7 @@ module.exports = {
             x++;
         }
 
-        var url = applyReplacement(this.options.resSetPath, {lng: lng, ns: ns})
+        var url = this.functions.applyReplacement(this.options.resSetPath, {lng: lng, ns: ns})
           , body = { };
 
         body[key] = defaultValue;
