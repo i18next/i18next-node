@@ -1,3 +1,7 @@
+### v1.7.10
+- fixes issue with cache control header [issue 169](https://github.com/i18next/i18next-node/issues/169)
+
+
 ### v1.7.9
 - fixes issue with saveMissing [issue 165](https://github.com/i18next/i18next-node/issues/165)
 
