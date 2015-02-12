@@ -1,3 +1,6 @@
+### v1.7.10
+- sync.load refactor to reload not yet loaded namespaces - not break on loaded language
+
 ### v1.7.9
 - fixes issue with saveMissing [issue 165](https://github.com/i18next/i18next-node/issues/165)
 
