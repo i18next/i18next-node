@@ -37,6 +37,9 @@ describe('i18next.translate', function() {
       lngWhitelist: null
     };
   });
+  afterEach(function (done) {
+    i18n.sync.reload(function () { done(); });
+  });
 
   describe('keys with non supported values', function() {
   
