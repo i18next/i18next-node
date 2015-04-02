@@ -1050,7 +1050,22 @@ describe('i18next.translate', function() {
       });
   
     });
-  
+
+  });
+
+  describe('falling back to default namespaces', function () {
+
+    it('falls back to default namespace if key cannot be found', function (done) {
+      i18n.init(i18n.functions.extend(opts, {
+            fallbackToDefaultNS: true,
+            fallbackOnEmpty: true,
+            fallbackOnNull: true }),
+          function(t) {
+            expect(t('simple_en-US', { ns: 'test-bom' })).to.equal('ok_from_en-US');
+            done();
+          });
+    });
+
   });
 
 });
