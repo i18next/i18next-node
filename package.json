@@ -28,6 +28,7 @@
     , "jade": ">=0.0.1"
     , "benchmark": ">=0.0.1"
     , "microtime": ">=0.0.1"
+    , "jquery": ">=2.1.3"
   },
   "scripts": {
     "test": "make test"
