@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "cookies": ">= 0.2.2",
+    "i18next-client": "^1.8.2",
     "json5": "^0.2.0"
   },
   "devDependencies": {
