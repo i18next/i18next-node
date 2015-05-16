@@ -26,7 +26,13 @@ module.exports = {
 
         var self = this;
 
-        this.client = redis.createClient(options.port, options.host);
+        // optional support for authentication by passing password or auth_pass in the options
+        var redisOpts = {};
+        if (options.auth_pass || options.password) {
+            redisOpts.auth_pass = options.auth_pass || options.password;
+        }
+
+        this.client = redis.createClient(options.port, options.host, redisOpts);
 
         this.client.on('ready', function () {
             if (options.database !== 0) {
