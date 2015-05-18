@@ -1,8 +1,8 @@
 {
     "author": "Jan Muehlemann"
   , "name": "i18next.redis"
-  , "version": "1.6.0"
-  , "contributors": [ 
+  , "version": "1.6.1"
+  , "contributors": [
     { "name": "Jan Muehlemann", "email": "jan.muehlemann@gmail.com" }
   ]
   , "private": false
@@ -18,6 +18,6 @@
       "mocha": ">= 0.0.1"
     , "expect.js": ">= 0.0.1"
   }
-  , "scripts" : { 
-      "test" : "mocha" } 
+  , "scripts" : {
+      "test" : "mocha" }
 }
