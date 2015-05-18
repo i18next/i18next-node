@@ -1,6 +1,9 @@
-var express = require('express')
-  , app = express()
-  , i18n = require('../index');
+var express = require('express'),
+  app = express(),
+  logger = require('morgan'),
+  path = require('path'),
+  i18n = require('../index'),
+  bodyParser = require('body-parser');
 
 // use mongoDb
 // var i18nMongoSync = require('../backends/mongoDb/index');
@@ -54,48 +57,77 @@ var express = require('express')
 //     });
 // });
 
+// static resources
+var oneDay = 86400000;
+app.use(express.static(path.join(__dirname, 'public'), {
+  maxAge: 7 * oneDay
+}));
+
 // use filesys
 i18n.init({
-    ns: { namespaces: ['ns.common', 'ns.special'], defaultNs: 'ns.special'},
-    resSetPath: 'locales/__lng__/new.__ns__.json',
-    saveMissing: true,
-    debug: true,
-    sendMissingTo: 'fallback'
+  ns: {
+    namespaces: ['ns.common', 'ns.special'],
+    defaultNs: 'ns.special'
+  },
+  resSetPath: 'locales/__lng__/new.__ns__.json',
+  saveMissing: true,
+  debug: true,
+  sendMissingTo: 'fallback',
+  preload: ['en', 'de'],
+  detectLngFromPath: 0,
+  ignoreRoutes: ['img/', 'img', 'img/', '/img/', 'css/', 'i18next/']
+}, function(t) {
+
+  console.log('i18n is initialized.');
+
+  i18n.addRoute('/:lng', ['en', 'de'], app, 'get', function(req, res) {
+    console.log('SEO friendly route ...');
+    res.render('index');
+  });
+
+  i18n.addRoute('/:lng/route.imprint', ['en', 'de'], app, 'get', function(req, res) {
+    console.log("localized imprint route");
+    res.render('imprint');
+  });
+
 });
 
 // Configuration
-app.configure(function() {
-    app.use(express.bodyParser());
-    app.use(i18n.handle); // have i18n befor app.router
-    
-    app.use(app.router);
-    app.set('view engine', 'jade');
-    app.set('views', __dirname);
-});
+app.use(logger('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
+app.use(i18n.handle); // have i18n befor app.router
+
+app.set('view engine', 'jade');
+app.set('views', __dirname);
 
 i18n.registerAppHelper(app)
-    .serveClientScript(app)
-    .serveDynamicResources(app)
-    .serveMissingKeyRoute(app);
+  .serveClientScript(app)
+  .serveDynamicResources(app)
+  .serveMissingKeyRoute(app);
 
 i18n.serveWebTranslate(app, {
-    i18nextWTOptions: {
-      languages: ['de-DE', 'en-US',  'dev'],
-      namespaces: ['ns.common', 'ns.special'],
-      resGetPath: "locales/resources.json?lng=__lng__&ns=__ns__",
-      resChangePath: 'locales/change/__lng__/__ns__',
-      resRemovePath: 'locales/remove/__lng__/__ns__',
-      fallbackLng: "dev",
-      dynamicLoad: true
-    }
+  i18nextWTOptions: {
+    languages: ['de-DE', 'en-US', 'dev'],
+    namespaces: ['ns.common', 'ns.special'],
+    resGetPath: "locales/resources.json?lng=__lng__&ns=__ns__",
+    resChangePath: 'locales/change/__lng__/__ns__',
+    resRemovePath: 'locales/remove/__lng__/__ns__',
+    fallbackLng: "dev",
+    dynamicLoad: true
+  }
 });
 
 app.get('/', function(req, res) {
-	res.render('index', { layout: false });
+  res.render('index', {
+    layout: false
+  });
 });
 
 app.get('/str', function(req, res) {
-    res.send('locale: ' + req.locale + '<br /> key nav.home -> ' + req.i18n.t('nav.home'));
+  res.send('locale: ' + req.locale + '<br /> key nav.home -> ' + req.i18n.t('nav.home'));
 });
 
 app.listen(3000);

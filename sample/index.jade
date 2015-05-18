@@ -1,9 +1,10 @@
-!!! 5
-html(lang="en")
+doctype html
+html(lang=i18n.lng())
     head
         title i18next sample
         script(src="http://code.jquery.com/jquery-1.7.min.js", type="text/javascript")
-        script(src='i18next/i18next.js', type='text/javascript')          
+        script(src='i18next/i18next.js', type='text/javascript') 
+        link(href="css/main.css", rel="stylesheet")      
 
     body
         h3 get current language in template via express app.helper 
@@ -13,6 +14,20 @@ html(lang="en")
         a#en(href='/?setLng=en-US') en-US
         | &nbsp;
         a#de(href='/?setLng=de-DE') de-DE
+
+        h3 you can use also localized routes, e.g.:
+        a#en(href='/en') /en
+        br
+        a#en(href='/en/' + t('route.imprint', { 'lng': 'en' })) /en/imprint
+        br
+        br
+        a#de(href='/de') /de
+        br
+        a#de(href='/de/' + t('route.imprint', { 'lng': 'de' })) /de/impressum
+
+        h3 don't localize static routes, e.g.
+        img(src="img/github.png", width=40, height=40)
+        p this should be very large text (3em)
 
         h3 go to online editor
         a(href='/i18next') webtranslate
@@ -57,8 +72,7 @@ html(lang="en")
         h5 post missing
         span#missing
 
-        script
-
+        script.
             var qsParm = new Array();
             function qs() {
                 var query = window.location.search.substring(1);
