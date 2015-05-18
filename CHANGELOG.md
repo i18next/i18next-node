@@ -1,5 +1,7 @@
 ### v1.9.0
 - fixes issue with cache control header [issue 169](https://github.com/i18next/i18next-node/issues/169)
+- Ensure language support in addRoute made optional [PR 174](https://github.com/i18next/i18next-node/pull/174)
+- Removed pluralExtensions lookup from detectLanguageFromPath [PR 181](https://github.com/i18next/i18next-node/pull/181)
 
 ### v1.7.10
 - sync.load refactor to reload not yet loaded namespaces - not break on loaded language
