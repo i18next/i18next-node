@@ -1,4 +1,8 @@
+var util = require("util");
+
 var mongo = require('mongodb');
+
+var MongoClient = mongo.MongoClient;
 
 module.exports = {
 
@@ -7,57 +11,37 @@ module.exports = {
     // `storage.connect(callback)`
     //
     // - __callback:__ `function(err, storage){}`
-    connect: function(options, callback) {
-
-        this.isConnected = false;
-
-        if (typeof options === 'function')
-            callback = options;
-            
-        var defaults = {
-            host: 'localhost',
-            port: 27017,
-            dbName: 'i18next',
-            resCollectionName: 'resources'
-        };
-
-        options = mergeOptions(options, defaults);
-
-        var defaultOpt = {
-            auto_reconnect: true,
-            ssl: false
-        };
-
-        options.options = options.options || {};
-
-        options.options = mergeOptions(options.options, defaultOpt);
-
+    connect: function (mongoURI, collectionName, options, callback) {
         var self = this;
+        var defaultMongoURI = "mongodb://localhost:27017/i18next";
+        var defaultCollectionName = "resources";
+        var defaultOptions = {};
 
-        var server = new mongo.Server(options.host, options.port, options.options);
-        new mongo.Db(options.dbName, server, {safe: true}).open(function(err, client) {
+        self.isConnected = false;
+
+        if (typeof mongoURI === "function") callback = mongoURI;
+        else if (typeof collectionName === "function") callback = collectionName;
+        else if (typeof options === "function") callback = options;
+
+        if (typeof mongoURI === "string") defaultMongoURI = mongoURI;
+        if (typeof collectionName === "string") defaultCollectionName = collectionName;
+        if (typeof options === "object" && !util.isArray(options)) defaultOptions = options;
+
+        MongoClient.connect(defaultMongoURI, defaultOptions, function (err, db) {
             if (err) {
                 if (callback) callback(err);
-            } else {
-                var finish = function() {
-                    self.client = client;
-                    self.isConnected = true;
-                    
-                    self.resources = new mongo.Collection(client, options.resCollectionName);
+                else throw err;
+            }
 
-                    if (callback) callback(null, self);
-                };
+            self.isConnected = true;
+            self.client = db;
+            self.resources = db.collection(defaultCollectionName);
 
-                if (options.username) {
-                    client.authenticate(options.username, options.password, finish);
-                } else {
-                    finish();
-                }
-            }        
+            if (callback) callback(null, self);
         });
     },
 
-    saveResourceSet: function(lng, ns, resourceSet, cb) {
+    saveResourceSet: function (lng, ns, resourceSet, cb) {
         var toSave = { resources: resourceSet };
         toSave._id = ns + '_' + lng;
         toSave.lng = lng;
@@ -66,15 +50,15 @@ module.exports = {
         this.resources.save(toSave, { safe: true }, cb);
     },
 
-    fetchOne: function(lng, ns, cb) {
+    fetchOne: function (lng, ns, cb) {
         var _id = ns + '_' + lng;
 
         var self = this;
-        this.resources.findOne({ _id: _id }, function(err, obj) {
+        this.resources.findOne({ _id: _id }, function (err, obj) {
             if (err) {
                 cb(err);
             } else {
-                if(!obj) {
+                if (!obj) {
                     cb(null, { });
                 } else {
                     self.functions.log('loaded from mongoDb: ' + _id);
@@ -84,7 +68,7 @@ module.exports = {
         });
     },
 
-    saveMissing: function(lng, ns, key, defaultValue, callback) {
+    saveMissing: function (lng, ns, key, defaultValue, callback) {
         // add key to resStore
         var keys = key.split(this.options.keyseparator);
         var x = 0;
@@ -99,7 +83,7 @@ module.exports = {
         }
 
         var self = this;
-        this.saveResourceSet(lng, ns, this.resStore[lng][ns], function(err) {
+        this.saveResourceSet(lng, ns, this.resStore[lng][ns], function (err) {
             if (err) {
                 self.functions.log('error saving missingKey `' + key + '` to mongoDb');
             } else {
@@ -109,10 +93,10 @@ module.exports = {
         });
     },
 
-    postChange: function(lng, ns, key, newValue, callback) {
+    postChange: function (lng, ns, key, newValue, callback) {
         var self = this;
 
-        this.load([lng], {ns: {namespaces: [ns]}}, function(err, fetched) {
+        this.load([lng], {ns: {namespaces: [ns]}}, function (err, fetched) {
             // change key in resStore
             var keys = key.split(self.options.keyseparator);
             var x = 0;
@@ -126,7 +110,7 @@ module.exports = {
                 x++;
             }
 
-            self.saveResourceSet(lng, ns, fetched[lng][ns], function(err) {
+            self.saveResourceSet(lng, ns, fetched[lng][ns], function (err) {
                 if (err) {
                     self.functions.log('error updating key `' + key + '` to mongoDb');
                 } else {
@@ -137,10 +121,10 @@ module.exports = {
         });
     },
 
-    postRemove: function(lng, ns, key, callback) {
+    postRemove: function (lng, ns, key, callback) {
         var self = this;
 
-        this.load([lng], {ns: {namespaces: [ns]}}, function(err, fetched) {
+        this.load([lng], {ns: {namespaces: [ns]}}, function (err, fetched) {
             // change key in resStore
             var keys = key.split(self.options.keyseparator);
             var x = 0;
@@ -154,7 +138,7 @@ module.exports = {
                 x++;
             }
 
-            self.saveResourceSet(lng, ns, fetched[lng][ns], function(err) {
+            self.saveResourceSet(lng, ns, fetched[lng][ns], function (err) {
                 if (err) {
                     self.functions.log('error removing key `' + key + '` to mongoDb');
                 } else {
@@ -168,13 +152,17 @@ module.exports = {
 };
 
 // helper
-var mergeOptions = function(options, defaultOptions) {
+var mergeOptions = function (options, defaultOptions) {
     if (!options || typeof options === 'function') {
         return defaultOptions;
     }
-    
+
     var merged = {};
-    for (var attrname in defaultOptions) { merged[attrname] = defaultOptions[attrname]; }
-    for (attrname in options) { if (options[attrname]) merged[attrname] = options[attrname]; }
-    return merged;  
+    for (var attrname in defaultOptions) {
+        merged[attrname] = defaultOptions[attrname];
+    }
+    for (attrname in options) {
+        if (options[attrname]) merged[attrname] = options[attrname];
+    }
+    return merged;
 };
