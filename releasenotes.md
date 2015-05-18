@@ -1,3 +1,6 @@
+### v1.9.0
+- fixes issue with cache control header [issue 169](https://github.com/i18next/i18next-node/issues/169)
+
 ### v1.7.10
 - sync.load refactor to reload not yet loaded namespaces - not break on loaded language
 
