@@ -36,24 +36,24 @@ describe('i18next.detectLanguage.spec', function() {
     app.configure(function() {
         app.use(express.bodyParser());
         app.use(i18n.handle); // have i18n befor app.router
-        
+
         app.use(app.router);
         app.set('view engine', 'jade');
         app.set('views', __dirname);
     });
 
-    app.get('/:lng/test', function(req, res) {
-      res.send(req.locale);
+    app.get('/getLng', function(req, res) {
+      res.send(req.lng);
     });
 
-    app.get('/getLng', function(req, res) {
-      res.send(req.locale);
+    app.get('/:lng/test', function(req, res) {
+      res.send(req.lng);
     });
 
     i18n.registerAppHelper(app)
       .serveClientScript(app)
       .serveDynamicResources(app);
-  
+
   });
 
   afterEach(function () {
@@ -120,7 +120,7 @@ describe('i18next.detectLanguage.spec', function() {
 
         beforeEach(function(done) {
           i18n.init(i18n.functions.extend(opts, {
-            supportedLngs: ['de-CH', 'en-US']
+            supportedLngs: ['de-CH', 'en-US', 'non-VALID']
           }), function(t) { done(); } );
         });
 
@@ -129,6 +129,15 @@ describe('i18next.detectLanguage.spec', function() {
             request(app)
               .get('/de-CH/test')
               .expect('de-CH')
+              .expect(200, done);
+          });
+        });
+
+        describe('by route with supported Lng thats not part of plurals list', function() {
+          it('it should return set language', function(done) {
+            request(app)
+              .get('/non-VALID/test')
+              .expect('non-VALID')
               .expect(200, done);
           });
         });
@@ -352,4 +361,3 @@ describe('i18next.detectLanguage.spec', function() {
       // });
 
     //});
-
