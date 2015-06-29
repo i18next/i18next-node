@@ -1,3 +1,10 @@
+### v1.10.2
+- update client
+- fixes fetchOne issue overwriting already loaded resources
+
+### v1.10.1
+- fixes client version
+
 ### v1.10.0
 - [BREAKING] new callbacks will be node.js conform function(err, t) | Forward the error from sync fetch methods to the init callback function [PR 402](https://github.com/i18next/i18next/pull/402)
 - update client

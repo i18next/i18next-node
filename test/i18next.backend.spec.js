@@ -107,17 +107,17 @@ describe('i18next.backend.spec', function() {
       supportedLngs: [],
       lowerCaseLng: false,
       ns: 'ns.test',
-      resGetPath: 'test/locales/__lng__/__ns__.json',
+      resGetPath: __dirname + '/locales/__lng__/__ns__.json',
       //resGetPath: 'test/locales/__lng__/__ns__.po',
       //resGetPath: 'test/locales/__lng__/__ns__.yml',
-      resSetPath: 'test/locales/__lng__/__ns__.json',
+      resSetPath: __dirname + '/locales/__lng__/__ns__.json',
       returnObjectTrees: false,
       debug: false
     };
 
     initBackend(function() {
       i18n.backend(sync);
-      i18n.init(opts, function(t) {
+      i18n.init(opts, function(err, t) {
         sync = i18n.sync;
         clear(done);
       });
@@ -138,7 +138,7 @@ describe('i18next.backend.spec', function() {
           expect(err).to.not.be.ok();
           done();
         });
-        
+
       });
 
       it('it should strip BOM without error', function(done) {
@@ -193,7 +193,7 @@ describe('i18next.backend.spec', function() {
           expect(err).to.not.be.ok();
           done();
         });
-        
+
       });
 
       it('it should have changed the key', function(done) {
@@ -219,7 +219,7 @@ describe('i18next.backend.spec', function() {
             done();
           });
         });
-        
+
       });
 
       it('it should have removed the key', function(done) {
