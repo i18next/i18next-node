@@ -13,7 +13,7 @@ module.exports = {
         request(url, function(err, res, body) {
             if (err) {
                 cb(err);
-            } else if (res.statusCode && res.statusCode.toString().indexOf('5') === 0) {
+            } else if (res.statusCode && (res.statusCode.toString().indexOf('5') === 0 || res.statusCode === 404)) {
                 var err = new Error(res.statusMessage);
                 err.i18nSkipOnError = true;
                 cb(err);
