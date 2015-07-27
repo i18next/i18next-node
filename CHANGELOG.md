@@ -1,3 +1,6 @@
+### v1.10.4
+- fixes appending lng in resStore if a namespace is omitted
+
 ### v1.10.3
 - allows backends to promote an error having err.i18nSkipOnError that will prevent setting an empty resource set and allows a reload on next access this way (usable in remotesync if remote in unavailable)
 
