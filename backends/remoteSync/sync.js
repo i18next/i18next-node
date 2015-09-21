@@ -12,10 +12,11 @@ module.exports = {
 
         request(url, function(err, res, body) {
             if (err) {
+                err.i18nSkipOnError = true; // will ignore and not write to resStore --> retry on next access
                 cb(err);
             } else if (res.statusCode && (res.statusCode.toString().indexOf('5') === 0 || res.statusCode === 404)) {
                 var err = new Error(res.statusMessage);
-                err.i18nSkipOnError = true;
+                err.i18nSkipOnError = true; // will ignore and not write to resStore --> retry on next access
                 cb(err);
             } else {
                 try {
