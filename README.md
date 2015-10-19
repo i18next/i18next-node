@@ -19,43 +19,56 @@ Project goal is to provide the same easy way to translate a website on serversid
 
 First require the module and init i18next:
 
-	var i18next = require('i18next');
-	i18next.init(); // for options see i18next-node gh-page
+```js
+var i18next = require('i18next');
+i18next.init(); // for options see i18next-node gh-page
+```
 
 Register the express middleware, so we can check current language settings:
 
-	// Configuration
-	app.configure(function() {
-	    app.use(express.bodyParser());
-	    app.use(i18next.handle);
-	    app.use(app.router);
+```js
+// Configuration
+app.configure(function() {
+    app.use(express.bodyParser());
+    app.use(i18next.handle);
+    app.use(app.router);
 
-	    [...]
-	});
+    [...]
+});
+```
 
 Register AppHelper so you can use the translate function in your template:
 
-	i18next.registerAppHelper(app)
+```js
+i18next.registerAppHelper(app)
+```
 
-Now you can (depending on your template language) do something like this in you template:
+Now you can (depending on your template language) do something like this in your template(jade example):
 
-	// sample in jade
-	body
-        span= t('app.name')
+```jade
+body
+span= t('app.name')
+```
 
 To serve the clientside script and needed routes for resources and missing keys:
 
-	i18next.serveClientScript(app)
-	    .serveDynamicResources(app)
-	    .serveMissingKeyRoute(app);
+```js
+i18next.serveClientScript(app)
+    .serveDynamicResources(app)
+    .serveMissingKeyRoute(app);
+```
 
 now you can add the script to you page and use i18next on the client like on the server:
 
-	script(src='i18next/i18next.js', type='text/javascript')
+```jade
+script(src='i18next/i18next.js', type='text/javascript')
+```
 
-    $.i18n.init([options], function() { 
-        $('#appname').text($.t('app.name'));
-    });
+```js
+$.i18n.init([options], function() { 
+    $('#appname').text($.t('app.name'));
+});
+```
 
 for more information on clientside usage have a look at [i18next](http://i18next.github.com/i18next/)
 
