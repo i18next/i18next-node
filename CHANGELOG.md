@@ -1,3 +1,6 @@
+### v1.10.5
+- [SECURITY] update client to include - merges Reimplement XSS-vulnerable sequential replacement code [PR 443](https://github.com/i18next/i18next/pull/443)
+
 ### v1.10.4
 - fixes appending lng in resStore if a namespace is omitted
 
