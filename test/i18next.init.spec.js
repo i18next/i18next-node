@@ -504,7 +504,7 @@ describe('i18next.init', function() {
                 resStore: resStore,
                 saveMissing: true, /* must be changed to saveMissing */
                 ns: { namespaces: ['ns.common', 'ns.special', 'ns.fallback'], defaultNs: 'ns.special'} } ),
-                function(t) {
+                function(err, t) {
                   spy = sinon.spy(i18n.options, 'missingKeyHandler');
                   t('ns.common:notExisting');
                   done();

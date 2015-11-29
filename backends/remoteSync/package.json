@@ -1,8 +1,8 @@
 {
     "author": "Jan Muehlemann"
   , "name": "i18next.remotesync"
-  , "version": "1.6.3"
-  , "contributors": [ 
+  , "version": "1.6.6"
+  , "contributors": [
     { "name": "Jan Muehlemann", "email": "jan.muehlemann@gmail.com" }
   ]
   , "private": false
@@ -17,6 +17,6 @@
       "mocha": ">= 0.0.1"
     , "expect.js": ">= 0.0.1"
   }
-  , "scripts" : { 
-      "test" : "mocha" } 
+  , "scripts" : {
+      "test" : "mocha" }
 }

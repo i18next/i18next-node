@@ -12,6 +12,11 @@ module.exports = {
 
         request(url, function(err, res, body) {
             if (err) {
+                err.i18nSkipOnError = true; // will ignore and not write to resStore --> retry on next access
+                cb(err);
+            } else if (res.statusCode && (res.statusCode.toString().indexOf('5') === 0 || res.statusCode === 404)) {
+                var err = new Error(res.statusMessage);
+                err.i18nSkipOnError = true; // will ignore and not write to resStore --> retry on next access
                 cb(err);
             } else {
                 try {
@@ -97,7 +102,7 @@ module.exports = {
 
             request.post({url: url, body: body, json: true}, function(err, res, body) {
                 if (err) console.log(err);
-            }); 
+            });
         });
     }
 
@@ -108,9 +113,9 @@ var mergeOptions = function(options, defaultOptions) {
     if (!options || typeof options === 'function') {
         return defaultOptions;
     }
-    
+
     var merged = {};
     for (var attrname in defaultOptions) { merged[attrname] = defaultOptions[attrname]; }
     for (attrname in options) { if (options[attrname]) merged[attrname] = options[attrname]; }
-    return merged;  
+    return merged;
 };
