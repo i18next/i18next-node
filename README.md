@@ -1,8 +1,43 @@
+# PREVIEW TO v2.0.0 beta
+
+Currently we work hard on getting out [v2.0.0 of i18next](https://github.com/i18next/i18next/tree/2.0.0). It's a complete rewrite of the current code base from 2011 and will assert i18next is ready for the next big things that will come.
+
+Current state is **beta**.
+
+- [Getting started](http://i18next.github.io/i18next.com/docs/)
+- [API](http://i18next.github.io/i18next.com/docs/api/)
+- [Translate](http://i18next.github.io/i18next.com/translate/)
+- [Migration Guide](http://i18next.github.io/i18next.com/docs/migration/)
+
+Source can be loaded via [npm](https://www.npmjs.com/package/i18next), bower or [downloaded](https://github.com/i18next/i18next/blob/2.0.0/i18next.min.js) from this repo.
+
+
+```bash
+# npm
+$ npm install i18next@beta
+
+# bower
+$ bower install i18next/i18next#2.0.0
+```
+
+---------
+
+We highly encourage maintainers of modules using i18next to migrate to v2.
+
+
+In our company we already use v2.0.0 in production, so for people starting a new project we recommend directly using v2.
+
+For people already using i18next in production we recommend to wait for first release - but still feel free to play with it and giving early feedback before the release gets finalized.
+
+
+more info could be found on: [Migration Guide](http://i18next.github.io/i18next.com/docs/migration/)
+
+
 # Introduction
 
 [![Build Status](https://secure.travis-ci.org/i18next/i18next-node.png)](http://travis-ci.org/i18next/i18next-node)
 
-Project goal is to provide the same easy way to translate a website on serverside like in 
+Project goal is to provide the same easy way to translate a website on serverside like in
 [i18next](https://github.com/i18next/i18next) on the clientside:
 
 - Translation inside your server code or template
@@ -53,7 +88,7 @@ now you can add the script to you page and use i18next on the client like on the
 
 	script(src='i18next/i18next.js', type='text/javascript')
 
-    $.i18n.init([options], function() { 
+    $.i18n.init([options], function() {
         $('#appname').text($.t('app.name'));
     });
 
