@@ -99,17 +99,11 @@ now you can add the script to you page and use i18next on the client like on the
 script(src='i18next/i18next.js', type='text/javascript')
 ```
 
-<<<<<<< HEAD
-    $.i18n.init([options], function() {
-        $('#appname').text($.t('app.name'));
-    });
-=======
 ```js
 $.i18n.init([options], function() {
     $('#appname').text($.t('app.name'));
 });
 ```
->>>>>>> 5d67a7350690d8e5110695ae26367d4f6ad94e5c
 
 for more information on clientside usage have a look at [i18next](http://i18next.github.com/i18next/)
 
